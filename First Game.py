@@ -8,6 +8,7 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
 
+# create a clock object to track time
 clock = pygame.time.Clock()
 fps = 60
 
@@ -43,7 +44,6 @@ start_img = pygame.image.load('img/start_btn.png')
 exit_img = pygame.image.load('img/exit_btn.png')
 
 #load sounds
-
 coin_fx = pygame.mixer.Sound('img/coin.wav')
 coin_fx.set_volume(0.3)
 
@@ -104,19 +104,22 @@ class Button():
 		screen.blit(self.image, self.rect)
 
 		return action
+
 class Player():
 	def __init__(self, x, y):
 		self.reset(x, y)
 
+	# handles the player's animation
 	def update(self,game_over):
 		dx = 0
 		dy = 0
-		walk_cooldown = 5
+		walk_cooldown = 5 # slow down walking animation
 		col_thresh = 20
 
 		if game_over == 0:
-			#get keypresses
+			# get user's keypresses
 			key = pygame.key.get_pressed()
+
 			if key[pygame.K_UP] and self.jumped == False and self.in_air == False:
 				jump_fx.play()
 				self.vel_y = -15
@@ -132,26 +135,30 @@ class Player():
 				self.counter += 1
 				self.direction = 1
 			if key[pygame.K_LEFT] == False and key[pygame.K_RIGHT] == False:
+				# reset player to stand still when not walking
 				self.counter = 0
 				self.index = 0
+            	# check if right or left keys are pressed to change player facing direction
 				if self.direction == 1:
 					self.image = self.images_right[self.index]
 				if self.direction == -1:
 					self.image = self.images_left[self.index]
 
-			#handle animation
+			# slow down player's walking animation
 			if self.counter > walk_cooldown:
 				self.counter = 0
 				self.index += 1
+				# reset image index to 0 after the last image
 				if self.index >= len(self.images_right):
 					self.index = 0
+	            # check if right or left keys are pressed to change player's facing direction accordingly
 				if self.direction == 1:
 					self.image = self.images_right[self.index]
 				if self.direction == -1:
 					self.image = self.images_left[self.index]
 
 
-			#add gravity
+			# add gravity when player jumps
 			self.vel_y +=1
 			if self.vel_y > 10:
 				self.vel_y = 10

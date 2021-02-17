@@ -49,7 +49,7 @@ font = pygame.font.SysFont('Futura', 24)
 #create empty tile list
 world_data = []
 for row in range(20):
-	r = [0] * 20
+    r = [0] * 20
 	world_data.append(r)
 
 #create boundary
