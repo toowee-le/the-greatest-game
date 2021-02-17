@@ -117,11 +117,11 @@ class Player():
 		if game_over == 0:
 			#get keypresses
 			key = pygame.key.get_pressed()
-			if key[pygame.K_SPACE] and self.jumped == False and self.in_air == False:
+			if key[pygame.K_UP] and self.jumped == False and self.in_air == False:
 				jump_fx.play()
 				self.vel_y = -15
 				self.jumped = True
-			if key[pygame.K_SPACE] == False:
+			if key[pygame.K_UP] == False:
 				self.jumped = False
 			if key[pygame.K_LEFT]:
 				dx -= 5
@@ -200,7 +200,7 @@ class Player():
 						dy = platform.rect.bottom - self.rect.top
 					#check if above platform
 					elif abs((self.rect.bottom + dy) - platform.rect.top) < col_thresh:
-						self.rect.bottom - platform.rect.top - 1
+						self.rect.bottom = platform.rect.top - 1
 						self.in_air = False
 						dy = 0
 					#move with platform - sideways
@@ -465,3 +465,4 @@ while run:
 	pygame.display.update()
 
 pygame.quit()
+
