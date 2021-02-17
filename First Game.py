@@ -145,7 +145,7 @@ class Player():
 
 			#record current time
 			time_now = pygame.time.get_ticks()
-
+ 
 			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
 				bullet = Bullet(self.rect.x +10, self.rect.bottom -40)
 				bullet_group.add(bullet)
@@ -418,11 +418,21 @@ class Bullet(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect()
 		self.rect.center = [x,y]
 
+	#bullets disappear after a certain distance and direction is decided below
 	def update(self):
 		self.rect.x += 5
-		if self.rect.center < 200:
+		if self.rect.left > 400:
+			print('hit')
 			self.kill()
-	#if player is facing left do - , if right do +5
+		if pygame.sprite.spritecollide(self, blob_group,True):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (platform_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (lava_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (exit_group),False):
+			self.kill()
+
 
 
 player = Player(100, screen_height - 130)
