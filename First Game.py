@@ -70,6 +70,7 @@ def reset_level(level):
 	lava_group.empty()
 	exit_group.empty()
 	platform_group.empty()
+	mace_group.empty()
 
 	if path.exists(f'level{level}_data'):
 		pickle_in = open(f'level{level}_data', 'rb')
@@ -104,15 +105,18 @@ class Button():
 		screen.blit(self.image, self.rect)
 
 		return action
+		
 class Player():
 	def __init__(self, x, y):
 		self.reset(x, y)
+		self.last_shot = pygame.time.get_ticks()
 
 	def update(self,game_over):
 		dx = 0
 		dy = 0
 		walk_cooldown = 5
 		col_thresh = 20
+		cooldown = 500 #milliseconds
 
 		if game_over == 0:
 			#get keypresses
@@ -138,6 +142,15 @@ class Player():
 					self.image = self.images_right[self.index]
 				if self.direction == -1:
 					self.image = self.images_left[self.index]
+
+			#record current time
+			time_now = pygame.time.get_ticks()
+
+			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
+				bullet = Bullet(self.rect.x +10, self.rect.bottom -40)
+				bullet_group.add(bullet)
+				self.last_shot = time_now
+
 
 			#handle animation
 			if self.counter > walk_cooldown:
@@ -177,6 +190,10 @@ class Player():
 
 			#check for collision with enemies
 			if pygame.sprite.spritecollide(self,blob_group, False):
+				game_over = -1
+				game_over_fx.play()
+			#check for collision with mace
+			if pygame.sprite.spritecollide(self,mace_group, False):
 				game_over = -1
 				game_over_fx.play()
 			#check for collision with lava
@@ -297,6 +314,9 @@ class World():
 				if tile == 8:
 					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2))
 					exit_group.add(exit)
+				if tile == 9:
+					mace = Mace(col_count * tile_size, row_count * tile_size + 15)
+					mace_group.add(mace)
 
 				col_count += 1
 			row_count += 1
@@ -310,6 +330,23 @@ class Enemy(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load('img/blob.png')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+		self.move_direction = 1
+		self.move_counter = 0
+
+	def update(self):
+		self.rect.x += self.move_direction
+		self.move_counter +=1
+		if abs(self.move_counter > 50):
+			self.move_direction *= -1
+			self.move_counter *= -1
+
+class Mace(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('img/Mace.png')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
@@ -364,7 +401,6 @@ class Coin(pygame.sprite.Sprite):
 		self.rect.center = (x,y) 
 
 
-
 class Exit(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
@@ -374,6 +410,20 @@ class Exit(pygame.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 
+class Bullet(pygame.sprite.Sprite):
+	def __init__(self,x,y):
+		pygame.sprite.Sprite.__init__(self)
+		img = pygame.image.load('img/rock9.png')
+		self.image = pygame.transform.scale(img, (12,12))
+		self.rect = self.image.get_rect()
+		self.rect.center = [x,y]
+
+	def update(self):
+		self.rect.x += 5
+		if self.rect.center < 200:
+			self.kill()
+	#if player is facing left do - , if right do +5
+
 
 player = Player(100, screen_height - 130)
 
@@ -382,6 +432,9 @@ platform_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
+mace_group = pygame.sprite.Group()
+bullet_group = pygame.sprite.Group()
+
 
 #create dummy coin for showing score
 score_coin = Coin(tile_size//2, tile_size //2)
@@ -415,6 +468,8 @@ while run:
 
 		if game_over == 0:
 			blob_group.update()
+			mace_group.update()
+			bullet_group.update()
 			platform_group.update()
 			#update score & check if coin is collected
 			if pygame.sprite.spritecollide(player, coin_group, True):
@@ -427,6 +482,8 @@ while run:
 		lava_group.draw(screen)
 		exit_group.draw(screen)
 		coin_group.draw(screen)
+		mace_group.draw(screen)
+		bullet_group.draw(screen)
 
 		#draw.grid()
 		game_over = player.update(game_over)
