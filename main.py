@@ -413,7 +413,7 @@ world = World(world_data)
 
 # create buttons
 #restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
-start_button = Button(screen_width // 2 - 350, screen_height // 2, start_img, screen, 'START')
+start_button = Button(screen_width // 2 - 130, screen_height // 2 - 60, start_img, screen, 'START')
 #exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img, screen)
 
 # main game loop
