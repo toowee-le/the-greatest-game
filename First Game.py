@@ -30,10 +30,14 @@ main_menu = True
 level = 1
 max_levels = 7
 score = 0
+shooter_cooldown = 1000 #bullet cooldown in milliseconds
+last_shooter_shot = pygame.time.get_ticks()
 
 #define colour
 white = (255,255,255)
 blue = (0, 0, 255)
+red = (255, 0, 0)
+green = (0, 255, 0)
 
 #load images
 sun_img = pygame.image.load('img/sun.png')
@@ -71,6 +75,8 @@ def reset_level(level):
 	exit_group.empty()
 	platform_group.empty()
 	mace_group.empty()
+	shooter_group.empty()
+	shooter_bullet_group.empty()
 
 	if path.exists(f'level{level}_data'):
 		pickle_in = open(f'level{level}_data', 'rb')
@@ -147,7 +153,7 @@ class Player():
 			time_now = pygame.time.get_ticks()
  
 			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
-				bullet = Bullet(self.rect.x +10, self.rect.bottom -40)
+				bullet = Bullet(self.rect.x +10, self.rect.bottom -40, player.direction)
 				bullet_group.add(bullet)
 				self.last_shot = time_now
 
@@ -198,6 +204,14 @@ class Player():
 				game_over_fx.play()
 			#check for collision with lava
 			if pygame.sprite.spritecollide(self,lava_group, False):
+				game_over = -1
+				game_over_fx.play()
+			#check for collision with shooter
+			if pygame.sprite.spritecollide(self,shooter_group, False):
+				game_over = -1
+				game_over_fx.play()
+			#check for collision with shooter bullets
+			if pygame.sprite.spritecollide(self,shooter_bullet_group, False):
 				game_over = -1
 				game_over_fx.play()
 			#check for collision with exit
@@ -277,7 +291,7 @@ class World():
 		#load images
 		dirt_img = pygame.image.load('img/dirt.png')
 		grass_img = pygame.image.load('img/grass.png')
-
+		
 		row_count = 0
 		for row in data:
 			col_count = 0
@@ -315,8 +329,11 @@ class World():
 					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2))
 					exit_group.add(exit)
 				if tile == 9:
-					mace = Mace(col_count * tile_size, row_count * tile_size + 15)
+					mace = Mace(col_count * tile_size, row_count * tile_size + 15, 4)
 					mace_group.add(mace)
+				if tile == 10:
+					shooter = Shooter(col_count * tile_size, row_count * tile_size + 15)
+					shooter_group.add(shooter)
 
 				col_count += 1
 			row_count += 1
@@ -343,8 +360,53 @@ class Enemy(pygame.sprite.Sprite):
 			self.move_direction *= -1
 			self.move_counter *= -1
 
-class Mace(pygame.sprite.Sprite):
+class Shooter(pygame.sprite.Sprite):
 	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load('img/R1E.png')
+		self.rect = self.image.get_rect()
+		self.rect.x = x
+		self.rect.y = y
+
+	def update(self):
+		pass
+
+class Shooter_Bullets(pygame.sprite.Sprite):
+	def __init__(self,x,y):
+		pygame.sprite.Sprite.__init__(self)
+		img = pygame.image.load('img/rock3.png')
+		self.image = pygame.transform.scale(img, (12,12))
+		self.rect = self.image.get_rect()
+		self.rect.center = [x,y]
+
+	#bullets disappear after a certain distance and direction is decided below
+	def update(self):
+		#record time for shooter bullets
+		time_now = pygame.time.get_ticks()
+		#shoot
+		if time_now - last_shooter_shot > shooter_cooldown:
+			shooter_bullet = Shooter_Bullets(shooter.rect.center, shooter.rect.bottom)
+			shooter_bullet_group.add(shooter_bullet)
+			last_shooter_shot = time_now
+
+		self.rect.x -= 5
+		if self.rect.right > 400:
+			print('hit')
+			self.kill()
+		if pygame.sprite.spritecollide(self, (blob_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (platform_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (lava_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (exit_group),False):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (mace_group),False):
+			self.kill()
+			mace.health_remaining -= 1
+
+class Mace(pygame.sprite.Sprite):
+	def __init__(self, x, y, health):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load('img/Mace.png')
 		self.rect = self.image.get_rect()
@@ -352,6 +414,8 @@ class Mace(pygame.sprite.Sprite):
 		self.rect.y = y
 		self.move_direction = 1
 		self.move_counter = 0
+		# self.health_start = health
+		# self.health_remaining = health
 
 	def update(self):
 		self.rect.x += self.move_direction
@@ -359,6 +423,12 @@ class Mace(pygame.sprite.Sprite):
 		if abs(self.move_counter > 50):
 			self.move_direction *= -1
 			self.move_counter *= -1
+
+		#health bar
+		# pygame.draw.rect(screen, red, (self.rect.x, (self.rect.top - 30), self.rect.width, 15))
+		# if self.health_remaining > 0:
+		# 	pygame.draw.rect(screen, green, (self.rect.x, (self.rect.top - 30), int(self.rect.width * (self.health_remaining / self.health_start)), 15))
+
 			
 class Platform(pygame.sprite.Sprite):
 	def __init__(self, x, y, move_x, move_y):
@@ -411,20 +481,27 @@ class Exit(pygame.sprite.Sprite):
 		self.rect.y = y
 
 class Bullet(pygame.sprite.Sprite):
-	def __init__(self,x,y):
+	def __init__(self,x,y, direction):
 		pygame.sprite.Sprite.__init__(self)
 		img = pygame.image.load('img/rock9.png')
 		self.image = pygame.transform.scale(img, (12,12))
 		self.rect = self.image.get_rect()
 		self.rect.center = [x,y]
+		self.direction = direction
 
 	#bullets disappear after a certain distance and direction is decided below
 	def update(self):
-		self.rect.x += 5
+		if self.direction == 1:
+			self.rect.x += 5
+		else: 
+			self.rect.x -=5
+
 		if self.rect.left > 400:
 			print('hit')
 			self.kill()
-		if pygame.sprite.spritecollide(self, blob_group,True):
+		if pygame.sprite.spritecollide(self, (blob_group),True):
+			self.kill()
+		if pygame.sprite.spritecollide(self, (platform_group),False):
 			self.kill()
 		if pygame.sprite.spritecollide(self, (platform_group),False):
 			self.kill()
@@ -432,6 +509,18 @@ class Bullet(pygame.sprite.Sprite):
 			self.kill()
 		if pygame.sprite.spritecollide(self, (exit_group),False):
 			self.kill()
+		if pygame.sprite.spritecollide(self, (mace_group),False):
+			self.kill()
+			# mace.health_remaining -= 1
+		
+		for tile in world.tile_list:
+				#check for collision in x direction
+				if tile[1].colliderect(self):
+					self.kill()
+				# check for collision in y direction
+				if tile[1].colliderect(self):
+					self.kill()
+					
 
 
 
@@ -444,7 +533,8 @@ exit_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 mace_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
-
+shooter_group = pygame.sprite.Group()
+shooter_bullet_group = pygame.sprite.Group()
 
 #create dummy coin for showing score
 score_coin = Coin(tile_size//2, tile_size //2)
@@ -481,6 +571,10 @@ while run:
 			mace_group.update()
 			bullet_group.update()
 			platform_group.update()
+			shooter_group.update()
+			shooter_bullet_group.update()
+			lava_group.update()
+			
 			#update score & check if coin is collected
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
@@ -494,6 +588,9 @@ while run:
 		coin_group.draw(screen)
 		mace_group.draw(screen)
 		bullet_group.draw(screen)
+		shooter_group.draw(screen)
+		shooter_bullet_group.draw(screen)
+
 
 		#draw.grid()
 		game_over = player.update(game_over)

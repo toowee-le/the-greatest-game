@@ -35,6 +35,8 @@ exit_img = pygame.image.load('img/exit.png')
 save_img = pygame.image.load('img/save_btn.png')
 load_img = pygame.image.load('img/load_btn.png')
 mace_img = pygame.image.load('img/Mace.png')
+shooter_img = pygame.image.load('img/R1E.png')
+shooter_bullet_img = pygame.image.load('img/rock3.png')
 
 
 #define game variables
@@ -112,6 +114,10 @@ def draw_world():
 				if world_data[row][col] == 9:
 					#enemy blocks
 					img = pygame.transform.scale(mace_img, (tile_size, int(tile_size * 0.75)))
+					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
+				if world_data[row][col] == 10:
+					#enemy blocks
+					img = pygame.transform.scale(shooter_img, (tile_size, int(tile_size * 0.75)))
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
 
 
@@ -196,12 +202,12 @@ while run:
 				#update tile value
 				if pygame.mouse.get_pressed()[0] == 1:
 					world_data[y][x] += 1
-					if world_data[y][x] > 9:
+					if world_data[y][x] > 10:
 						world_data[y][x] = 0
 				elif pygame.mouse.get_pressed()[2] == 1:
 					world_data[y][x] -= 1
 					if world_data[y][x] < 0:
-						world_data[y][x] = 9
+						world_data[y][x] = 10
 		if event.type == pygame.MOUSEBUTTONUP:
 			clicked = False
 		#up and down key presses to change level number
