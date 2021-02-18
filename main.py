@@ -53,8 +53,6 @@ red = (255, 0, 0)
 green = (0, 255, 0)
 
 # load images
-sun_img = pygame.image.load('img/sun.png')
-bg_img = pygame.image.load('img/sky.png')
 restart_img = pygame.image.load('img/restart_btn.png')
 start_img = pygame.image.load('img/start_btn.png')
 exit_img = pygame.image.load('img/exit_btn.png')
@@ -74,6 +72,14 @@ game_over_fx.set_volume(0.3)
 # 		pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
 # 		pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
+# draw background function
+def draw_window():
+	bg_img = pygame.image.load('img/bg.png')
+	bg_img = pygame.transform.scale(bg_img, (1820, 1000) )
+	sun_img = pygame.image.load('img/sun.png')
+
+	screen.blit(bg_img, (0, 0))
+	screen.blit(sun_img, (100, 100))
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -384,6 +390,7 @@ class Shooter_Bullets(pygame.sprite.Sprite):
 # create instances
 player = Player(100, screen_height - 130)
 
+# groups
 blob_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
@@ -404,10 +411,10 @@ if path.exists(f'level{level}_data'):
 	world_data = pickle.load(pickle_in)
 world = World(world_data)
 
-#create buttons
-restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
-start_button = Button(screen_width // 2 -350, screen_height // 2, start_img, screen)
-exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img, screen)
+# create buttons
+#restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
+start_button = Button(screen_width // 2 - 350, screen_height // 2, start_img, screen, 'START')
+#exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img, screen)
 
 # main game loop
 run = True
@@ -415,13 +422,12 @@ while run:
 
 	clock.tick(fps)
 
-	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (100, 100))
+	draw_window()
 
 	# only display start and exit buttons on the menu page
 	if main_menu == True:
-		if exit_button.draw():
-			run = False
+		#if exit_button.draw():
+			#run = False
 		if start_button.draw():
 			main_menu = False
 	else:
