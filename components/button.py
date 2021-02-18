@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 class Button(pygame.sprite.Sprite):
-	def __init__(self, x, y, image, screen, text):
+	def __init__(self, x, y, image, screen, text = ''):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = image
 		self.width = self.image.get_width()
