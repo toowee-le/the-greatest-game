@@ -22,11 +22,13 @@ pygame.display.set_caption('Platformer')
 #define font
 font = pygame.font.SysFont('Bauhaus 93', 100)
 font_score = pygame.font.SysFont('Bauhaus 93', 30)
+small_font = pygame.font.SysFont('Bauhaus 93', 20)
 
 #define game variables
 
 tile_size = 45
 game_over = 0
+lives = 3
 main_menu = True
 level = 1
 max_levels = 7
@@ -123,8 +125,9 @@ class Player():
 		walk_cooldown = 5
 		col_thresh = 20
 		cooldown = 500 #milliseconds
+		lives = 3
 
-		if game_over == 0:
+		if game_over == 0 and lives > 0:
 			#get keypresses
 			key = pygame.key.get_pressed()
 			if key[pygame.K_UP] and self.jumped == False and self.in_air == False:
@@ -244,7 +247,6 @@ class Player():
 
 		elif game_over == -1:
 			self.image = self.dead_image
-			draw_text('Game Over!', font, blue, (screen_width // 2) - 200, screen_height // 2)
 			if self.rect.y > 200:
 				self.rect.y -= 5
 
@@ -253,6 +255,7 @@ class Player():
 		# pygame.draw.rect(screen, (255, 255, 255,), self.rect, 2)
 
 		return game_over
+		return lives
 
 
 
@@ -513,6 +516,7 @@ shooter_group = pygame.sprite.Group()
 score_coin = Coin(tile_size//2, tile_size //2)
 coin_group.add(score_coin)
 
+
 #load in level data and create world
 if path.exists(f'level{level}_data'):
 	pickle_in = open(f'level{level}_data', 'rb')
@@ -532,6 +536,11 @@ while run:
 	screen.blit(bg_img, (0, 0))
 	screen.blit(sun_img, (100, 100))
 	if main_menu == True:
+		draw_text(f'INSTRUCTIONS:', font_score, (131,139,139), (screen_width // 3)- 200, screen_height // 3)
+		draw_text(f'To move your character, please use the arrow keys', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 30)
+		draw_text(f'To throw a rock, press the spacebar key', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 60)
+		draw_text(f'To win- avoid the obstacles as you reach the doors of the next level', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 90)
+		draw_text(f'3 lives and 7 levels - let the game begin!', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 120)
 		if exit_button.draw():
 			run = False
 		if start_button.draw():
@@ -562,19 +571,33 @@ while run:
 		bullet_group.draw(screen)
 		shooter_group.draw(screen)
 
+		draw_text('lives: ' + str(lives), font_score, white, tile_size + 700, 10)
 
 
 		#draw.grid()
 		game_over = player.update(game_over)
 
 		#if player has died
-		if game_over == -1:
+		if game_over == -1 and lives > 0:
+			draw_text(f'You have {lives - 1} lives left', font, (127,255,212), (screen_width // 3)- 200, screen_height // 3)
 			if restart_button.draw():
 				world_data = []
 				world = reset_level(level)
 				game_over = 0
+				lives -= 1
+				print (lives)
 				score = 0
-
+		#if lost 3 lives
+		if lives == 0:
+			draw_text('Game Over! Play again?', font, (127,255,212), (screen_width // 2) - 400, screen_height // 2)
+					#restart game
+			if restart_button.draw():
+				level = 1
+				world_data = []
+				world = reset_level(level)
+				game_over = 0
+				score = 0
+				lives = 3
 		#player completes level
 		if game_over == 1:
 			#reset game and go to next level
@@ -593,6 +616,16 @@ while run:
 					world = reset_level(level)
 					game_over = 0
 					score = 0
+		elif game_over == -1 and lives == 0:
+				draw_text('You loose!', font, blue, (screen_width // 2)- 140, screen_height // 2)
+				#restart game
+				if restart_button.draw():
+					level = 1
+					world_data = []
+					world = reset_level(level)
+					game_over = 0
+					score = 0
+
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
