@@ -31,7 +31,7 @@ level = 1
 max_levels = 7
 score = 0
 player_lives = True
-
+rrok;kg
 #define colour
 white = (255,255,255)
 blue = (0, 0, 255)
@@ -196,12 +196,12 @@ class Player():
 # restarts level with  - 1 life but does not reset the level with the enemy included
 				game_over = -1
 				game_over_fx.play()
-			# if game_over == -1:
-			# 	if restart_button.draw():
-			# 		world_data = []
-			# 		world = reset_level(level)
-			# 		game_over = 0
-			# 		score = 0
+# 				if game_over == -1:
+				  # if restart_button.draw():
+					#   world_data = []
+					#   world = reset_level(level)
+					#   game_over = 0
+					#   score = 0
 
 
 
@@ -497,13 +497,6 @@ while run:
 			if restart_button.draw():
 				player.reset(100, screen_height - 130)
 				game_over = 0
-
-
-
-
-
-
-			if restart_button.draw():
 				world_data = []
 				world = reset_level(level)
 				game_over = 0
