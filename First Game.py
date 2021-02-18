@@ -30,6 +30,7 @@ main_menu = True
 level = 1
 max_levels = 7
 score = 0
+player_lives = True
 
 #define colour
 white = (255,255,255)
@@ -88,7 +89,8 @@ class Button():
 
 	def draw(self):
 		action = False
-		#get mouse position
+
+			#get mouse position
 		pos = pygame.mouse.get_pos()
 
 		#check mouseover and clicked conditions
@@ -107,6 +109,9 @@ class Button():
 class Player():
 	def __init__(self, x, y):
 		self.reset(x, y)
+
+
+		# pygame.draw.rect(screen, (0, 255, 0), self.x + 15, self.y, 30, 10)
 
 	def update(self,game_over):
 		dx = 0
@@ -156,7 +161,7 @@ class Player():
 			if self.vel_y > 10:
 				self.vel_y = 10
 			dy += self.vel_y
-			
+
 			#check for collision
 			self.in_air = True
 			for tile in world.tile_list:
@@ -176,9 +181,41 @@ class Player():
 						self.in_air = False
 
 			#check for collision with enemies
-			if pygame.sprite.spritecollide(self,blob_group, False):
+			if pygame.sprite.spritecollide(self, blob_group, False):
+				# loses life when has collision with enemies
+				if pygame.sprite.spritecollide(self, blob_group, True):
+					player.lives -= 1
+
+
+
+
+
+
+
+
+# restarts level with  - 1 life but does not reset the level with the enemy included
 				game_over = -1
 				game_over_fx.play()
+			# if game_over == -1:
+			# 	if restart_button.draw():
+			# 		world_data = []
+			# 		world = reset_level(level)
+			# 		game_over = 0
+			# 		score = 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			#check for collision with lava
 			if pygame.sprite.spritecollide(self,lava_group, False):
 				game_over = -1
@@ -257,6 +294,7 @@ class World():
 	def __init__(self, data):
 		self.tile_list = []
 
+
 		#load images
 		dirt_img = pygame.image.load('img/dirt.png')
 		grass_img = pygame.image.load('img/grass.png')
@@ -306,15 +344,31 @@ class World():
 			screen.blit(tile[0], tile[1])
 			#pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
 
+
+		# player health
+		font = pygame.font.SysFont('Bauhaus 93', 50)
+		text = font.render('Lives: ' + str(player.lives), True, (0, 0, 0))
+		screen.blit(text, (650, 20))
+
+
+
+
+
+
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
+		player.lives = 3
+
+
+
 		self.image = pygame.image.load('img/blob.png')
 		self.rect = self.image.get_rect()
 		self.rect.x = x
 		self.rect.y = y
 		self.move_direction = 1
 		self.move_counter = 0
+
 
 	def update(self):
 		self.rect.x += self.move_direction
@@ -326,6 +380,7 @@ class Enemy(pygame.sprite.Sprite):
 class Platform(pygame.sprite.Sprite):
 	def __init__(self, x, y, move_x, move_y):
 		pygame.sprite.Sprite.__init__(self)
+
 		img = pygame.image.load('img/platform.png')
 		self.image = pygame.transform.scale(img, (tile_size, tile_size//2))
 		self.rect = self.image.get_rect()
@@ -415,12 +470,15 @@ while run:
 
 		if game_over == 0:
 			blob_group.update()
+
+
 			platform_group.update()
 			#update score & check if coin is collected
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()
 			draw_text('X ' + str(score), font_score, white, tile_size -10, 10)
+
 
 		blob_group.draw(screen)
 		platform_group.draw(screen)
@@ -431,28 +489,43 @@ while run:
 		#draw.grid()
 		game_over = player.update(game_over)
 
+
+
 		#if player has died
 		if game_over == -1:
+
+			if restart_button.draw():
+				player.reset(100, screen_height - 130)
+				game_over = 0
+
+
+
+
+
+
 			if restart_button.draw():
 				world_data = []
 				world = reset_level(level)
 				game_over = 0
 				score = 0
 
+
 		#player completes level
 		if game_over == 1:
+
 			#reset game and go to next level
 			level += 1
 			if level <= max_levels:
 				#reset level
-				world_data = []
-				world = reset_level(level)
-				game_over = 0
+
+				 world_data = []
+				 world = reset_level(level)
+				 game_over = 0
+
 			else:
 				draw_text('You Win!', font, blue, (screen_width // 2)- 140, screen_height // 2)
 				#restart game
 				if restart_button.draw():
-					level = 1
 					world_data = []
 					world = reset_level(level)
 					game_over = 0
