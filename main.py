@@ -1,3 +1,13 @@
+from components.button import Button
+from components.enemy import Enemy
+from components.mace import Mace
+from components.lava import Lava
+from components.shooter import Shooter
+from components.coin import Coin
+from components.bullet import Bullet
+from components.platform import Platform
+from components.exit import Exit
+
 import pygame
 from pygame.locals import *
 import pickle
@@ -23,7 +33,6 @@ font = pygame.font.SysFont('Bauhaus 93', 100)
 font_score = pygame.font.SysFont('Bauhaus 93', 30)
 
 #define game variables
-
 tile_size = 45
 game_over = 0
 main_menu = True
@@ -85,34 +94,7 @@ def reset_level(level):
 
 	return world
 
-class Button():
-	def __init__(self, x, y, image):
-		self.image = image
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.clicked = False
-
-	def draw(self):
-		action = False
-		#get mouse position
-		pos = pygame.mouse.get_pos()
-
-		#check mouseover and clicked conditions
-		if self.rect.collidepoint(pos):
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				action = True
-				self.clicked = True
-		
-		if pygame.mouse.get_pressed()[0] == 0:
-			self.clicked = False
-			
-		#draw button
-		screen.blit(self.image, self.rect)
-
-		return action
-		
-class Player():
+class Player():	
 	def __init__(self, x, y):
 		self.reset(x, y)
 		self.last_shot = pygame.time.get_ticks()
@@ -153,7 +135,7 @@ class Player():
 			time_now = pygame.time.get_ticks()
  
 			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
-				bullet = Bullet(self.rect.x +10, self.rect.bottom -40, player.direction)
+				bullet = Bullet(self.rect.x +10, self.rect.bottom -40, player.direction, blob_group, platform_group, lava_group, exit_group, mace_group, world = World(world_data))
 				bullet_group.add(bullet)
 				self.last_shot = time_now
 
@@ -320,13 +302,13 @@ class World():
 					platform = Platform(col_count * tile_size, row_count * tile_size, 0, 1)
 					platform_group.add(platform)
 				if tile == 6:
-					lava = Lava(col_count * tile_size, row_count * tile_size + 1 + (tile_size//2))
+					lava = Lava(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 					lava_group.add(lava)
 				if tile == 7:
-					coin = Coin(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size//2))
+					coin = Coin(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 					coin_group.add(coin)
 				if tile == 8:
-					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2))
+					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2), tile_size)
 					exit_group.add(exit)
 				if tile == 9:
 					mace = Mace(col_count * tile_size, row_count * tile_size + 15, 4)
@@ -342,34 +324,6 @@ class World():
 		for tile in self.tile_list:
 			screen.blit(tile[0], tile[1])
 			#pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
-
-class Enemy(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('img/blob.png')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_direction = 1
-		self.move_counter = 0
-
-	def update(self):
-		self.rect.x += self.move_direction
-		self.move_counter +=1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-class Shooter(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('img/R1E.png')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-	def update(self):
-		pass
 
 class Shooter_Bullets(pygame.sprite.Sprite):
 	def __init__(self,x,y):
@@ -405,125 +359,7 @@ class Shooter_Bullets(pygame.sprite.Sprite):
 			self.kill()
 			mace.health_remaining -= 1
 
-class Mace(pygame.sprite.Sprite):
-	def __init__(self, x, y, health):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load('img/Mace.png')
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_direction = 1
-		self.move_counter = 0
-		# self.health_start = health
-		# self.health_remaining = health
-
-	def update(self):
-		self.rect.x += self.move_direction
-		self.move_counter +=1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-		#health bar
-		# pygame.draw.rect(screen, red, (self.rect.x, (self.rect.top - 30), self.rect.width, 15))
-		# if self.health_remaining > 0:
-		# 	pygame.draw.rect(screen, green, (self.rect.x, (self.rect.top - 30), int(self.rect.width * (self.health_remaining / self.health_start)), 15))
-
-			
-class Platform(pygame.sprite.Sprite):
-	def __init__(self, x, y, move_x, move_y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('img/platform.png')
-		self.image = pygame.transform.scale(img, (tile_size, tile_size//2))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_counter = 0
-		self.move_direction = 1
-		self.move_x = move_x
-		self.move_y = move_y
-		
-
-	def update(self):
-		self.rect.x += self.move_direction * self.move_x
-		self.rect.y += self.move_direction * self.move_y
-		self.move_counter +=1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-class Lava(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('img/lava.png')
-		self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-
-class Coin(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('img/coin.png')
-		self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
-		self.rect = self.image.get_rect()
-		self.rect.center = (x,y) 
-
-
-class Exit(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('img/exit.png')
-		self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-class Bullet(pygame.sprite.Sprite):
-	def __init__(self,x,y, direction):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load('img/rock9.png')
-		self.image = pygame.transform.scale(img, (12,12))
-		self.rect = self.image.get_rect()
-		self.rect.center = [x,y]
-		self.direction = direction
-
-	#bullets disappear after a certain distance and direction is decided below
-	def update(self):
-		if self.direction == 1:
-			self.rect.x += 5
-		else: 
-			self.rect.x -=5
-
-		if self.rect.left > 400:
-			print('hit')
-			self.kill()
-		if pygame.sprite.spritecollide(self, (blob_group),True):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group),False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group),False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (lava_group),False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (exit_group),False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (mace_group),False):
-			self.kill()
-			# mace.health_remaining -= 1
-		
-		for tile in world.tile_list:
-				#check for collision in x direction
-				if tile[1].colliderect(self):
-					self.kill()
-				# check for collision in y direction
-				if tile[1].colliderect(self):
-					self.kill()
-					
-
-
-
+# create instances
 player = Player(100, screen_height - 130)
 
 blob_group = pygame.sprite.Group()
@@ -537,7 +373,7 @@ shooter_group = pygame.sprite.Group()
 shooter_bullet_group = pygame.sprite.Group()
 
 #create dummy coin for showing score
-score_coin = Coin(tile_size//2, tile_size //2)
+score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
 coin_group.add(score_coin)
 
 #load in level data and create world
@@ -547,9 +383,9 @@ if path.exists(f'level{level}_data'):
 world = World(world_data)
 
 #create buttons
-restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
-start_button = Button(screen_width // 2 -350, screen_height // 2, start_img)
-exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img)
+restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
+start_button = Button(screen_width // 2 -350, screen_height // 2, start_img, screen)
+exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img, screen)
 
 run = True
 while run:
