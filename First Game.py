@@ -439,6 +439,13 @@ class Lava(pygame.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 
+class Lives(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		img = pygame.image.load('img/heart.png')
+		self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
+		self.rect = self.image.get_rect()
+		self.rect.center = (x,y)
 
 class Coin(pygame.sprite.Sprite):
 	def __init__(self, x, y):
@@ -510,11 +517,19 @@ coin_group = pygame.sprite.Group()
 mace_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
 shooter_group = pygame.sprite.Group()
+lives_group = pygame.sprite.Group()
 
 
 #create dummy coin for showing score
 score_coin = Coin(tile_size//2, tile_size //2)
 coin_group.add(score_coin)
+
+player_lives = Lives(tile_size//2, tile_size//2)
+live_group.add(player_lives)
+
+draw_text('lives: ' + str(lives), font_score, white, tile_size + 700, 10)
+
+
 
 
 #load in level data and create world
