@@ -3,11 +3,16 @@ from components.button import Button
 from components.enemy import Enemy
 from components.mace import Mace
 from components.lava import Lava
-from components.shooter import Shooter
+from components.water import Water
+from components.saw import Saw
 from components.coin import Coin
 from components.bullet import Bullet
 from components.platform import Platform
 from components.exit import Exit
+from components.chest import Chest
+from components.tree import Tree
+
+#from swf.movie import SWF
 
 # import and initialize pygame
 import pygame
@@ -21,6 +26,11 @@ from pygame import mixer
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
+
+# # create a file object
+# file = open('img/coin-animation.swf', 'rb')
+
+# print swf(file)
 
 # create a clock object to track frames per second
 clock = pygame.time.Clock()
@@ -63,6 +73,11 @@ sound_on_img = pygame.image.load('img/sound_on_btn.png')
 sound_on_img = pygame.transform.scale(sound_on_img, (100, 100))
 sound_off_img = pygame.image.load('img/sound_off_btn.png')
 sound_off_img = pygame.transform.scale(sound_off_img, (100, 100))
+bg_img = pygame.image.load('img/bg.png')
+bg_img = pygame.transform.scale(bg_img, (1820, 1000))
+sun_img = pygame.image.load('img/sun.png')
+dirt_img = pygame.image.load('img/dirt.png')
+grass_img = pygame.image.load('img/grass.png')
 
 # load sounds
 music_fx = pygame.mixer.Sound('img/bg_music.wav')
@@ -82,15 +97,6 @@ game_over_fx.set_volume(0.3)
 # 		pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
 # 		pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
-# draw background function
-def draw_window():
-	bg_img = pygame.image.load('img/bg.png')
-	bg_img = pygame.transform.scale(bg_img, (1820, 1000) )
-	sun_img = pygame.image.load('img/sun.png')
-
-	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (720, 100))
-
 # draw menu buttons
 def draw_menu_window():
 	instruction_button.draw()
@@ -108,8 +114,11 @@ def reset_level(level):
 	exit_group.empty()
 	platform_group.empty()
 	mace_group.empty()
-	shooter_group.empty()
+	saw_group.empty()
 	shooter_bullet_group.empty()
+	water_group.empty()
+	chest_group.empty()
+	tree_group.empty()
 
 	if path.exists(f'level{level}_data'):
 		pickle_in = open(f'level{level}_data', 'rb')
@@ -222,8 +231,13 @@ class Player():
 				game_over = -1
 				game_over_fx.play()
 
+			# check for collision with water
+			if pygame.sprite.spritecollide(self,water_group, False):
+				game_over = -1
+				game_over_fx.play()
+
 			# check for collision with shooter
-			if pygame.sprite.spritecollide(self,shooter_group, False):
+			if pygame.sprite.spritecollide(self,saw_group, False):
 				game_over = -1
 				game_over_fx.play()
 
@@ -271,10 +285,10 @@ class Player():
 		screen.blit(self.image, self.rect)
 		# pygame.draw.rect(screen, (255, 255, 255,), self.rect, 2)
 
-        # return the global game_over variable which will change if player collides with enemies/obstacles
+		# return the global game_over variable which will change if player collides with enemies/obstacles
 		return game_over
 
-    # reset the game with player at starting initalized position
+	# reset the game with player at starting initalized position
 	def reset(self, x, y):
 		self.images_right = []
 		self.images_left = []
@@ -303,10 +317,6 @@ class World():
 	def __init__(self, data):
 		self.tile_list = []
 
-		# load images
-		dirt_img = pygame.image.load('img/dirt.png')
-		grass_img = pygame.image.load('img/grass.png')
-		
 		row_count = 0
 		for row in data:
 			col_count = 0
@@ -355,10 +365,33 @@ class World():
 				if tile == 9:
 					mace = Mace(col_count * tile_size, row_count * tile_size + 15, 4)
 					mace_group.add(mace)
-				#10 shooter
+				#10 saw
 				if tile == 10:
-					shooter = Shooter(col_count * tile_size, row_count * tile_size + 15)
-					shooter_group.add(shooter)
+					saw = Saw(col_count * tile_size, row_count * tile_size + 15, tile_size)
+					saw_group.add(saw)
+				#11 chest
+				if tile == 11:
+					chest = Chest(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					chest_group.add(chest)
+				#12 water
+				if tile == 12:
+					water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					water_group.add(water)
+				#13 tree
+				if tile == 13:
+					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					tree_group.add(tree)
+				# flowers
+				# if tile == 15:
+				# 	flower = Flower(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+				# 	flower_group.add(flower)
+				# # rock
+				# if tile == 16:
+				# 	rock = rock(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+				# 	rock_group.add(rock)
+
+				# character animation
+				
 				col_count += 1
 			row_count += 1
 
@@ -409,12 +442,15 @@ player = Player(100, screen_height - 130)
 blob_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
+water_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 mace_group = pygame.sprite.Group()
 bullet_group = pygame.sprite.Group()
-shooter_group = pygame.sprite.Group()
+saw_group = pygame.sprite.Group()
 shooter_bullet_group = pygame.sprite.Group()
+chest_group = pygame.sprite.Group()
+tree_group = pygame.sprite.Group()
 
 #create dummy coin for showing score
 score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
@@ -441,8 +477,8 @@ while run:
 
 	clock.tick(fps)
 
-	# draw background
-	draw_window()
+	screen.blit(bg_img, (0, 0))
+	screen.blit(sun_img, (720, 100))
 
 	# only display start and exit buttons on the menu page
 	if main_menu == True:
@@ -467,9 +503,11 @@ while run:
 			mace_group.update()
 			bullet_group.update()
 			platform_group.update()
-			shooter_group.update()
+			saw_group.update()
 			shooter_bullet_group.update()
 			lava_group.update()
+			water_group.update()
+			chest_group.update()
 			
 			# update score & check if coin is collected
 			if pygame.sprite.spritecollide(player, coin_group, True):
@@ -480,12 +518,15 @@ while run:
 		blob_group.draw(screen)
 		platform_group.draw(screen)
 		lava_group.draw(screen)
+		water_group.draw(screen)
 		exit_group.draw(screen)
 		coin_group.draw(screen)
 		mace_group.draw(screen)
 		bullet_group.draw(screen)
-		shooter_group.draw(screen)
+		saw_group.draw(screen)
 		shooter_bullet_group.draw(screen)
+		chest_group.draw(screen)
+		tree_group.draw(screen)
 
 		#draw.grid()
 		game_over = player.update(game_over)  # update the game_over variable - checks if player has collided with enemies/obstacles
