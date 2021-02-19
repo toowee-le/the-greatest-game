@@ -31,7 +31,7 @@ level = 1
 max_levels = 7
 score = 0
 player_lives = True
-rrok;kg
+
 #define colour
 white = (255,255,255)
 blue = (0, 0, 255)
