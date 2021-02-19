@@ -45,6 +45,7 @@ max_levels = 7
 score = 0
 shooter_cooldown = 1000 # bullet cooldown in milliseconds
 last_shooter_shot = pygame.time.get_ticks()
+sound = 0
 
 # define colours
 white = (255,255,255)
@@ -66,7 +67,6 @@ sound_off_img = pygame.transform.scale(sound_off_img, (100, 100))
 # load sounds
 music_fx = pygame.mixer.Sound('img/bg_music.wav')
 music_fx.set_volume(0.2)
-music_fx.play(-1)
 
 coin_fx = pygame.mixer.Sound('img/coin.wav')
 coin_fx.set_volume(0.3)
@@ -435,16 +435,6 @@ scoreboard_button = Button(750, 750, scoreboard_img, screen)
 sound_on_button = Button(20, 20, sound_on_img, screen)
 sound_off_button = Button(130, 20, sound_off_img, screen)
 
-def toggle_sound():
-	toggle = False
-
-	if toggle:
-		toggle = False
-		music_fx.play()
-	else:
-		toggle = True
-		music_fx.fadeout(200)
-
 # main game loop
 run = True
 while run:
@@ -458,9 +448,11 @@ while run:
 	if main_menu == True:
 		draw_menu_window()
 
-		if sound_on_button.draw():
+		if sound_on_button.draw() and sound == 0:
+			sound = 1
 			music_fx.play()
-		if sound_off_button.draw():
+		if sound_off_button.draw() and sound == 1:
+			sound = 0
 			music_fx.stop()
 		if exit_button.draw():
 			run = False
