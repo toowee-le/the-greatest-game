@@ -64,6 +64,10 @@ sound_off_img = pygame.image.load('img/sound_off_btn.png')
 sound_off_img = pygame.transform.scale(sound_off_img, (100, 100))
 
 # load sounds
+music_fx = pygame.mixer.Sound('img/bg_music.wav')
+music_fx.set_volume(0.2)
+music_fx.play(-1)
+
 coin_fx = pygame.mixer.Sound('img/coin.wav')
 coin_fx.set_volume(0.3)
 
@@ -86,8 +90,9 @@ def draw_window():
 
 	screen.blit(bg_img, (0, 0))
 	screen.blit(sun_img, (720, 100))
-	
-	sound_on_button.draw()
+
+# draw menu buttons
+def draw_menu_window():
 	instruction_button.draw()
 	scoreboard_button.draw()
 
@@ -428,7 +433,17 @@ exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img,
 instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
 scoreboard_button = Button(750, 750, scoreboard_img, screen)
 sound_on_button = Button(20, 20, sound_on_img, screen)
-sound_off_button = Button(20, 20, sound_off_img, screen)
+sound_off_button = Button(130, 20, sound_off_img, screen)
+
+def toggle_sound():
+	toggle = False
+
+	if toggle:
+		toggle = False
+		music_fx.play()
+	else:
+		toggle = True
+		music_fx.fadeout(200)
 
 # main game loop
 run = True
@@ -436,10 +451,17 @@ while run:
 
 	clock.tick(fps)
 
+	# draw background
 	draw_window()
 
 	# only display start and exit buttons on the menu page
 	if main_menu == True:
+		draw_menu_window()
+
+		if sound_on_button.draw():
+			music_fx.play()
+		if sound_off_button.draw():
+			music_fx.stop()
 		if exit_button.draw():
 			run = False
 		if start_button.draw():
