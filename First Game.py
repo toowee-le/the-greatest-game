@@ -30,8 +30,10 @@ main_menu = True
 level = 1
 max_levels = 7
 score = 0
-player_lives = True
-rrok;kg
+lives = 3
+alive = True
+
+
 #define colour
 white = (255,255,255)
 blue = (0, 0, 255)
@@ -111,6 +113,7 @@ class Player():
 		self.reset(x, y)
 
 
+
 		# pygame.draw.rect(screen, (0, 255, 0), self.x + 15, self.y, 30, 10)
 
 	def update(self,game_over):
@@ -118,6 +121,7 @@ class Player():
 		dy = 0
 		walk_cooldown = 5
 		col_thresh = 20
+
 
 		if game_over == 0:
 			#get keypresses
@@ -180,39 +184,12 @@ class Player():
 						self.vel_y = 0
 						self.in_air = False
 
+
 			#check for collision with enemies
 			if pygame.sprite.spritecollide(self, blob_group, False):
 				# loses life when has collision with enemies
-				if pygame.sprite.spritecollide(self, blob_group, True):
-					player.lives -= 1
-
-
-
-
-
-
-
-
-# restarts level with  - 1 life but does not reset the level with the enemy included
 				game_over = -1
 				game_over_fx.play()
-# 				if game_over == -1:
-				  # if restart_button.draw():
-					#   world_data = []
-					#   world = reset_level(level)
-					#   game_over = 0
-					#   score = 0
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -244,7 +221,7 @@ class Player():
 					if platform.move_x != 0:
 						self.rect.x += platform.move_direction
 
-			#update plater cordinates
+			#update player cordinates
 			self.rect.x += dx
 			self.rect.y +=dy
 
@@ -289,6 +266,7 @@ class Player():
 		self.jumped = False
 		self.direction = 0
 		self.in_air = True
+		self.alive = True
 
 class World():
 	def __init__(self, data):
@@ -336,6 +314,7 @@ class World():
 					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2))
 					exit_group.add(exit)
 
+
 				col_count += 1
 			row_count += 1
 
@@ -347,7 +326,7 @@ class World():
 
 		# player health
 		font = pygame.font.SysFont('Bauhaus 93', 50)
-		text = font.render('Lives: ' + str(player.lives), True, (0, 0, 0))
+		text = font.render('Lives: ' + str(lives), True, (0, 0, 0))
 		screen.blit(text, (650, 20))
 
 
@@ -358,8 +337,6 @@ class World():
 class Enemy(pygame.sprite.Sprite):
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
-		player.lives = 3
-
 
 
 		self.image = pygame.image.load('img/blob.png')
@@ -368,6 +345,11 @@ class Enemy(pygame.sprite.Sprite):
 		self.rect.y = y
 		self.move_direction = 1
 		self.move_counter = 0
+
+
+
+
+
 
 
 	def update(self):
@@ -431,7 +413,6 @@ class Exit(pygame.sprite.Sprite):
 
 
 player = Player(100, screen_height - 130)
-
 blob_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
@@ -490,17 +471,26 @@ while run:
 		game_over = player.update(game_over)
 
 
-
 		#if player has died
 		if game_over == -1:
+
+
+
+
+
 
 			if restart_button.draw():
 				player.reset(100, screen_height - 130)
 				game_over = 0
 				world_data = []
 				world = reset_level(level)
-				game_over = 0
-				score = 0
+				lives -= 1
+
+
+
+
+
+
 
 
 		#player completes level
@@ -510,19 +500,27 @@ while run:
 			level += 1
 			if level <= max_levels:
 				#reset level
-
 				 world_data = []
 				 world = reset_level(level)
 				 game_over = 0
 
+
+
 			else:
 				draw_text('You Win!', font, blue, (screen_width // 2)- 140, screen_height // 2)
-				#restart game
+				#restart
 				if restart_button.draw():
 					world_data = []
+					level = 1
 					world = reset_level(level)
 					game_over = 0
 					score = 0
+					game_over =-1
+
+
+
+
+
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:

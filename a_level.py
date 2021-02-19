@@ -27,6 +27,7 @@ bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
 dirt_img = pygame.image.load('img/dirt.png')
 grass_img = pygame.image.load('img/grass.png')
 blob_img = pygame.image.load('img/blob.png')
+mace_img = pygame.image.load('img/mace.png')
 platform_x_img = pygame.image.load('img/platform_x.png')
 platform_y_img = pygame.image.load('img/platform_y.png')
 lava_img = pygame.image.load('img/lava.png')
@@ -104,7 +105,11 @@ def draw_world():
 					#coin
 					img = pygame.transform.scale(coin_img, (tile_size // 2, tile_size // 2))
 					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
+					# mace enemy
 				if world_data[row][col] == 8:
+					img = pygame.transform.scale(mace_img, (tile_size, int(tile_size * 0.85)))
+					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.35)))
+				if world_data[row][col] == 9:
 					#exit
 					img = pygame.transform.scale(exit_img, (tile_size, int(tile_size * 1.5)))
 					screen.blit(img, (col * tile_size, row * tile_size - (tile_size // 2)))
