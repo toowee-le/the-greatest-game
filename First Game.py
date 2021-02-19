@@ -392,8 +392,8 @@ class Mace(pygame.sprite.Sprite):
 		self.rect.y = y
 		self.move_direction = 1
 		self.move_counter = 0
-		# self.health_start = health
-		# self.health_remaining = health
+		self.health_start = health
+		self.health_remaining = health
 
 	def update(self):
 		self.rect.x += self.move_direction
@@ -402,10 +402,10 @@ class Mace(pygame.sprite.Sprite):
 			self.move_direction *= -1
 			self.move_counter *= -1
 
-		#health bar
-		# pygame.draw.rect(screen, red, (self.rect.x, (self.rect.top - 30), self.rect.width, 15))
-		# if self.health_remaining > 0:
-		# 	pygame.draw.rect(screen, green, (self.rect.x, (self.rect.top - 30), int(self.rect.width * (self.health_remaining / self.health_start)), 15))
+		# health bar
+		pygame.draw.rect(screen, red, (self.rect.x, (self.rect.top - 30), self.rect.width, 15))
+		if self.health_remaining > 0:
+			pygame.draw.rect(screen, green, (self.rect.x, (self.rect.top - 30), int(self.rect.width * (self.health_remaining / self.health_start)), 15))
 
 			
 class Platform(pygame.sprite.Sprite):
@@ -469,10 +469,10 @@ class Bullet(pygame.sprite.Sprite):
 
 	#bullets disappear after a certain distance and direction is decided below
 	def update(self):
-		if self.direction == 1:
-			self.rect.x += 5
+		if self.direction == -1:
+			self.rect.x -= 5
 		else: 
-			self.rect.x -=5
+			self.rect.x += 5
 
 		if pygame.sprite.spritecollide(self, (blob_group),True):
 			self.kill()
@@ -536,11 +536,14 @@ while run:
 	screen.blit(bg_img, (0, 0))
 	screen.blit(sun_img, (100, 100))
 	if main_menu == True:
-		draw_text(f'INSTRUCTIONS:', font_score, (131,139,139), (screen_width // 3)- 200, screen_height // 3)
-		draw_text(f'To move your character, please use the arrow keys', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 30)
-		draw_text(f'To throw a rock, press the spacebar key', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 60)
-		draw_text(f'To win- avoid the obstacles as you reach the doors of the next level', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 90)
-		draw_text(f'3 lives and 7 levels - let the game begin!', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 120)
+		draw_text(f'INSTRUCTIONS:', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) - 90)
+		draw_text(f'To move your character, please use the arrow keys', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3)- 60)
+		draw_text(f'To throw a rock, press the spacebar key', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) -30)
+		draw_text(f'To win- avoid the obstacles as you reach the doors of the next level', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3))
+		draw_text(f'3 lives and 7 levels - let the game begin!', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 30)
+		draw_text(f'BEWARE: If your character dies, the coin count is reset, so ...', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 60)
+		draw_text(f'Choose your moves wisely', font_score, (131,139,139), (screen_width // 3)- 200, (screen_height // 3) + 90)
+
 		if exit_button.draw():
 			run = False
 		if start_button.draw():
