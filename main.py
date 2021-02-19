@@ -56,6 +56,12 @@ green = (0, 255, 0)
 restart_img = pygame.image.load('img/restart_btn.png')
 start_img = pygame.image.load('img/start_btn.png')
 exit_img = pygame.image.load('img/exit_btn.png')
+instruction_img = pygame.image.load('img/instruction_btn.png')
+scoreboard_img = pygame.image.load('img/scoreboard_btn.png')
+sound_on_img = pygame.image.load('img/sound_on_btn.png')
+sound_on_img = pygame.transform.scale(sound_on_img, (100, 100))
+sound_off_img = pygame.image.load('img/sound_off_btn.png')
+sound_off_img = pygame.transform.scale(sound_off_img, (100, 100))
 
 # load sounds
 coin_fx = pygame.mixer.Sound('img/coin.wav')
@@ -79,7 +85,11 @@ def draw_window():
 	sun_img = pygame.image.load('img/sun.png')
 
 	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (100, 100))
+	screen.blit(sun_img, (720, 100))
+	
+	sound_on_button.draw()
+	instruction_button.draw()
+	scoreboard_button.draw()
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -412,9 +422,13 @@ if path.exists(f'level{level}_data'):
 world = World(world_data)
 
 # create buttons
-#restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
-start_button = Button(screen_width // 2 - 130, screen_height // 2 - 60, start_img, screen, 'START')
-#exit_button = Button(screen_width // 2 + 150, screen_height // 2, exit_img, screen)
+restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
+start_button = Button(screen_width // 2 - 130, screen_height // 2 - 66, start_img, screen, 'START')
+exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img, screen)
+instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
+scoreboard_button = Button(750, 750, scoreboard_img, screen)
+sound_on_button = Button(20, 20, sound_on_img, screen)
+sound_off_button = Button(20, 20, sound_off_img, screen)
 
 # main game loop
 run = True
@@ -426,8 +440,8 @@ while run:
 
 	# only display start and exit buttons on the menu page
 	if main_menu == True:
-		#if exit_button.draw():
-			#run = False
+		if exit_button.draw():
+			run = False
 		if start_button.draw():
 			main_menu = False
 	else:

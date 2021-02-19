@@ -29,7 +29,7 @@ class Button(pygame.sprite.Sprite):
 			self.clicked = False
 
 		# add text to button
-		font = pygame.font.SysFont('FreeMono, Monospace', 50)
+		font = pygame.font.SysFont('FreeMono, Monospace', 60)
 		text_img = font.render(self.text, True, (255,255,255))
 		text_len = text_img.get_width()
 		text_height = text_img.get_height()
