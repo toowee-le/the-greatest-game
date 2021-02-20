@@ -529,49 +529,49 @@ while run:
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) - 90,
+			(screen_height // 3) - 120,
 		)
 		draw_text(
 			f"To move your character, please use the arrow keys",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) - 60,
+			(screen_height // 3) - 90,
 		)
 		draw_text(
 			f"To throw a rock, press the spacebar key",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) - 30,
+			(screen_height // 3) - 60,
 		)
 		draw_text(
 			f"To win- avoid the obstacles as you reach the doors of the next level",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3),
+			(screen_height // 3) - 30,
 		)
 		draw_text(
 			f"3 lives and 7 levels - let the game begin!",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) + 30,
+			(screen_height // 3),
 		)
 		draw_text(
-			f"BEWARE: If your character dies, the coin count is reset, so ...",
+			f"BEWARE: If your character dies, the coin count is reset, ",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) + 60,
+			(screen_height // 3) + 30,
 		)
 		draw_text(
 			f"Choose your moves wisely",
 			font_score,
 			(131, 139, 139),
 			(screen_width // 3) - 200,
-			(screen_height // 3) + 90,
+			(screen_height // 3) + 60,
 		)
 	else:
 		world.draw()
@@ -613,7 +613,7 @@ while run:
 		tree_group.draw(screen)
 
 		draw_text("LIVES: " + str(lives), font_score, white, tile_size + 700, 10)
-		draw_text("LEVEL: " + str(level), font_score, white, tile_size + 350, 10)
+		draw_text("LEVEL: " + str(level) + "/7", font_score, white, tile_size + 350, 10)
 
 		# draw.grid()
 		game_over = player.update(game_over)
@@ -673,8 +673,8 @@ while run:
 					"You Win!",
 					font,
 					blue,
-					(screen_width // 2) - 140,
-					screen_height // 2,
+					(screen_width // 2) - 100,
+					screen_height // 2 - 100,
 				)
 				draw_text(
 					f"Coins won: {score}",
