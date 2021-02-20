@@ -677,7 +677,8 @@ while run:
         bullet_group.draw(screen)
         shooter_group.draw(screen)
 
-        draw_text("lives: " + str(lives), font_score, white, tile_size + 700, 10)
+        draw_text("LIVES: " + str(lives), font_score, white, tile_size + 700, 10)
+        draw_text("LEVEL: " + str(level), font_score, white, tile_size + 350, 10)
 
         # draw.grid()
         game_over = player.update(game_over)
