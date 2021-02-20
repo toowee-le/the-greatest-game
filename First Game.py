@@ -614,16 +614,16 @@ while run:
 		if game_over == -1:
 
 
-		if game_over == -1 and lives > 0:
-			draw_text(f'You have {lives - 1} lives left', font, (127,255,212), (screen_width // 3)- 200, screen_height // 3)
+		 if game_over == -1 and lives > 0:
+			 draw_text(f'You have {lives - 1} lives left', font, (127,255,212), (screen_width // 3)- 200, screen_height // 3)
 
-			if restart_button.draw():
-				player.reset(100, screen_height - 130)
-				game_over = 0
-				world_data = []
-				world = reset_level(level)
-				game_over = 0
-				lives -= 1
+			 if restart_button.draw():
+					player.reset(100, screen_height - 130)
+					game_over = 0
+					world_data = []
+					world = reset_level(level)
+					game_over = 0
+					lives -= 1
 
 
 
