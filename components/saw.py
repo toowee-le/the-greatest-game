@@ -18,3 +18,10 @@ class Saw(pygame.sprite.Sprite):
 		if abs(self.move_counter) > 75:
 			self.move_direction *= -1
 			self.move_counter *= -1
+
+	def move_towards_player(self, Player):
+		dx, dy = self.rect.x - Player.rect.x, self.rect.y - Player.rect.y
+		dist = math.hypot(dx, dy)
+		dx, dy = dx / dist, dy / dist
+		self.rect.x += dx * self.move_direction
+		self.rect.y += dy * self.move_direction

@@ -6,7 +6,6 @@ from components.lava import Lava
 from components.water import Water
 from components.saw import Saw
 from components.coin import Coin
-from components.bullet import Bullet
 from components.platform import Platform
 from components.exit import Exit
 from components.chest import Chest
@@ -124,34 +123,6 @@ def reset_level(level):
 	world = World(world_data)
 
 	return world
-
-class Button:
-	def __init__(self, x, y, image):
-		self.image = image
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.clicked = False
-
-	def draw(self):
-		action = False
-		# get mouse position
-		pos = pygame.mouse.get_pos()
-
-		# check mouseover and clicked conditions
-		if self.rect.collidepoint(pos):
-			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-				action = True
-				self.clicked = True
-
-		if pygame.mouse.get_pressed()[0] == 0:
-			self.clicked = False
-
-		# draw button
-		screen.blit(self.image, self.rect)
-
-		return action
-
 
 class Player:
 	def __init__(self, x, y):
@@ -376,13 +347,13 @@ class World:
 				#4 platform
 				if tile == 4:
 					platform = Platform(
-						col_count * tile_size, row_count * tile_size, 1, 0
+						col_count * tile_size, row_count * tile_size, 1, 0, tile_size
 					)
 					platform_group.add(platform)
 				#5 platform
 				if tile == 5:
 					platform = Platform(
-						col_count * tile_size, row_count * tile_size, 0, 1
+						col_count * tile_size, row_count * tile_size, 0, 1,tile_size
 					)
 					platform_group.add(platform)
 				#6 lava
@@ -390,6 +361,7 @@ class World:
 					lava = Lava(
 						col_count * tile_size,
 						row_count * tile_size + 1 + (tile_size // 2),
+						tile_size
 					)
 					lava_group.add(lava)
 				#7 coin
@@ -397,12 +369,13 @@ class World:
 					coin = Coin(
 						col_count * tile_size // 2,
 						row_count * tile_size + 1 + (tile_size // 2),
+						tile_size
 					)
 					coin_group.add(coin)
 				#8 exit level door
 				if tile == 8:
 					exit = Exit(
-						col_count * tile_size, row_count * tile_size - (tile_size // 2)
+						col_count * tile_size, row_count * tile_size - (tile_size // 2), tile_size
 					)
 					exit_group.add(exit)
 				#9 mace enemy
@@ -423,14 +396,14 @@ class World:
 				# 	chest = Chest(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 				# 	chest_group.add(chest)
 				#12 water
-				if tile == 12:
-					water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-					water_group.add(water)
+				# if tile == 12:
+				# 	water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+				# 	water_group.add(water)
 				#13 tree
-				if tile == 13:
-					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-					tree_group.add(tree)
-				# flowers
+				# if tile == 13:
+				# 	tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+				# 	tree_group.add(tree)
+				# # flowers
 				# if tile == 15:
 				# 	flower = Flower(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 				# 	flower_group.add(flower)
@@ -447,190 +420,6 @@ class World:
 		for tile in self.tile_list:
 			screen.blit(tile[0], tile[1])
 			# pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
-
-
-class Enemy(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("img/blob.png")
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_direction = 1
-		self.move_counter = 0
-
-	def update(self):
-		self.rect.x += self.move_direction
-		self.move_counter += 1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-
-class Chest(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		image = pygame.image.load("img/chest.png")
-		self.image = pygame.transform.scale(image, (50,50))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-	def update(self):
-		pass
-
-
-class Shooter(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("img/R1E.png")
-		self.rect = self.image.get_rect()
-		self.rect.center = [x, y]
-		self.move_counter = 0
-		self.move_direction = 1
-
-	def update(self):
-		self.rect.y += self.move_direction
-		self.move_counter += 1
-		if abs(self.move_counter) > 75:
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-	def move_towards_player(self, Player):
-		dx, dy = self.rect.x - Player.rect.x, self.rect.y - Player.rect.y
-		dist = math.hypot(dx, dy)
-		dx, dy = dx / dist, dy / dist
-		self.rect.x += dx * self.move_direction
-		self.rect.y += dy * self.move_direction
-
-
-class Mace(pygame.sprite.Sprite):
-	def __init__(self, x, y, health):
-		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load("img/Mace.png")
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_direction = 1
-		self.move_counter = 0
-		self.health_start = health
-		self.health_remaining = health
-
-	def update(self):
-		self.rect.x += self.move_direction
-		self.move_counter += 1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-		# health bar
-		pygame.draw.rect(
-			screen, red, (self.rect.x, (self.rect.top - 30), self.rect.width, 15)
-		)
-		if self.health_remaining > 0:
-			pygame.draw.rect(
-				screen,
-				green,
-				(
-					self.rect.x,
-					(self.rect.top - 30),
-					int(self.rect.width * (self.health_remaining / self.health_start)),
-					15,
-				),
-			)
-
-
-class Platform(pygame.sprite.Sprite):
-	def __init__(self, x, y, move_x, move_y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load("img/platform.png")
-		self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-		self.move_counter = 0
-		self.move_direction = 1
-		self.move_x = move_x
-		self.move_y = move_y
-
-	def update(self):
-		self.rect.x += self.move_direction * self.move_x
-		self.rect.y += self.move_direction * self.move_y
-		self.move_counter += 1
-		if abs(self.move_counter > 50):
-			self.move_direction *= -1
-			self.move_counter *= -1
-
-
-class Lava(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load("img/lava.png")
-		self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-
-class Coin(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load("img/coin.png")
-		self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
-		self.rect = self.image.get_rect()
-		self.rect.center = (x, y)
-
-
-class Exit(pygame.sprite.Sprite):
-	def __init__(self, x, y):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load("img/exit.png")
-		self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
-		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
-
-
-class Bullet(pygame.sprite.Sprite):
-	def __init__(self, x, y, direction):
-		pygame.sprite.Sprite.__init__(self)
-		img = pygame.image.load("img/rock9.png")
-		self.image = pygame.transform.scale(img, (12, 12))
-		self.rect = self.image.get_rect()
-		self.rect.center = [x, y]
-		self.direction = direction
-
-	# bullets disappear after a certain distance and direction is decided below
-	def update(self):
-		if self.direction == -1:
-			self.rect.x -= 5
-		else:
-			self.rect.x += 5
-
-		if pygame.sprite.spritecollide(self, (blob_group), True):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group), False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group), False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (lava_group), False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (exit_group), False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (mace_group), False):
-			self.kill()
-			# mace.health_remaining -= 1
-		if pygame.sprite.spritecollide(self, (shooter_group), True):
-			self.kill()
-
-		for tile in world.tile_list:
-			# check for collision in x direction
-			if tile[1].colliderect(self):
-				self.kill()
-			# check for collision in y direction
-			if tile[1].colliderect(self):
-				self.kill()
-
 
 player = Player(100, screen_height - 130)
 
@@ -798,6 +587,13 @@ while run:
 				(screen_width // 3) - 200,
 				screen_height // 3,
 			)
+			draw_text(
+				f"Coins lost: {score}",
+				font,
+				(127, 255, 212),
+				(screen_width // 3) - 200,
+				screen_height // 3 - 100,
+			)
 			if restart_button.draw():
 				world_data = []
 				world = reset_level(level)
@@ -814,6 +610,7 @@ while run:
 				(screen_width // 2) - 400,
 				screen_height // 2,
 			)
+			score = 0
 			# restart game
 			if restart_button.draw():
 				level = 1
@@ -834,6 +631,13 @@ while run:
 			else:
 				draw_text(
 					"You Win!",
+					font,
+					blue,
+					(screen_width // 2) - 140,
+					screen_height // 2,
+				)
+				draw_text(
+					f"Coins won: {score}",
 					font,
 					blue,
 					(screen_width // 2) - 140,

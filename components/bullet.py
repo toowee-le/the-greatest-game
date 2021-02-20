@@ -24,23 +24,22 @@ class Bullet(pygame.sprite.Sprite):
 		else: 
 			self.rect.x -= 5
 
-		if self.rect.left > 400:
-			print('hit')
+		if pygame.sprite.spritecollide(self, (blob_group), True):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (self.blob_group),True):
+		if pygame.sprite.spritecollide(self, (platform_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (self.platform_group),False):
+		if pygame.sprite.spritecollide(self, (platform_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (self.platform_group),False):
+		if pygame.sprite.spritecollide(self, (lava_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (self.lava_group),False):
+		if pygame.sprite.spritecollide(self, (exit_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (self.exit_group),False):
-			self.kill()
-		if pygame.sprite.spritecollide(self, (self.mace_group),False):
+		if pygame.sprite.spritecollide(self, (mace_group), False):
 			self.kill()
 			# mace.health_remaining -= 1
-		
+		if pygame.sprite.spritecollide(self, (shooter_group), True):
+			self.kill()
+
 		for tile in self.world.tile_list:
 			#check for collision in x direction
 			if tile[1].colliderect(self):
