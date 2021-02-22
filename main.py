@@ -47,7 +47,7 @@ tile_size = 45
 game_over = 0
 lives = 3
 main_menu = True
-instruction_menu = -1
+instruction_menu = True
 level = 1
 max_levels = 7
 score = 0
@@ -563,7 +563,7 @@ while run:
 	draw_menu_window()
 
 	# display menu page
-	if main_menu == True and instruction_menu == -1:
+	if main_menu == True:
 		# sound buttons
 		if sound_on_button.draw() and sound == 0:
 			sound = 1
@@ -576,25 +576,23 @@ while run:
 			run = False
 		if start_button.draw():
 			main_menu = False
-		
+			instruction_menu = False
+
 		scoreboard_button.draw()
 
 		# display instructions page
 		if instruction_button.draw():
 			main_menu = False
-			instruction_menu = 1
-			while instruction_menu == 1:
+			instruction_menu = True
 
-				draw_instruction_window()
+	elif instruction_menu == True:
+		draw_instruction_window()
 
-				# create and draw home button
-				home_button = Button(screen_width // 2 - 90, screen_height // 2, home_btn, screen)
-				if home_button.draw():
-					print("clicked")
-					main_menu = True
-					instruction_menu = -1
-
-				pygame.display.update()
+		# create and draw home button
+		home_button = Button(screen_width // 2 - 90, screen_height // 2, home_btn, screen)
+		if home_button.draw():
+			instruction_menu = False
+			main_menu = True
 
 	else:
 		world.draw()
