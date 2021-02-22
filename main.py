@@ -41,6 +41,8 @@ pygame.display.set_caption("Treasure Forest Game")
 font = pygame.font.SysFont("Bauhaus 93", 100)
 font_score = pygame.font.SysFont("Bauhaus 93", 30)
 small_font = pygame.font.SysFont("Bauhaus 93", 20)
+header_font = pygame.font.Font('Rubik-Mono-One.ttf', 65)
+main_font = pygame.font.Font('Rubik-Mono-One.ttf', 16)
 
 # define game variables
 tile_size = 45
@@ -58,7 +60,7 @@ sound = 0
 # define colour
 white = (255, 255, 255)
 blue = (0, 0, 255)
-red = (255, 0, 0)
+red = (231, 15, 17)
 green = (0, 255, 0)
 
 # load images
@@ -506,52 +508,66 @@ def draw_instruction_window():
 
 	draw_text(
 		f"HOW TO PLAY:",
-		font_score,
+		header_font,
+		red,
+		(screen_width // 3) - 204,
+		(screen_height // 3) - 170,
+	)
+	draw_text(
+		f"- Move character to his next level with arrow keys",
+		main_font,
 		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 120,
+		(screen_height // 3) - 85,
 	)
 	draw_text(
-		f"Help guide your character to his next level using the arrow keys.",
-		font_score,
-		(131, 139, 139),
+		f"- Jump with UP key to avoid obstacles",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 90,
+		(screen_height // 3) - 55,
 	)
 	draw_text(
-		f"Destroy your enemies by throwing rocks at them using the space bar.",
-		font_score,
-		(131, 139, 139),
+		f"- Throw rocks with space bar to destroy enemies",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 60,
+		(screen_height // 3) - 25,
 	)
 	draw_text(
-		f"For extra points, make sure to open the treasure chest.",
-		font_score,
-		(131, 139, 139),
+		f"- Avoid the mace or you'll lose a live",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 30,
+		(screen_height // 3) + 5,
 	)
 	draw_text(
-		f"3 lives and 7 levels - choose your moves wisely.",
-		font_score,
-		(131, 139, 139),
+		f"- Get the treasure chest for extra points",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3),
+		(screen_height // 3) + 35,
 	)
 	draw_text(
-		f"BEWARE: If your character dies, the coin count resets.",
-		font_score,
-		(131, 139, 139),
+		f"There's 7 levels and you only have 3 lives.",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 30,
+		(screen_height // 3) + 105,
 	)
 	draw_text(
-		f"Let the games begin!",
-		font_score,
-		(131, 139, 139),
+		f"Choose your moves wisely.",
+		main_font,
+		(0,0,0),
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 60,
+		(screen_height // 3) + 135,
+	)
+	draw_text(
+		f"Let the games begin!!!",
+		main_font,
+		(0,0,0),
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 165,
 	)
 
 # main game loop
@@ -589,7 +605,7 @@ while run:
 		draw_instruction_window()
 
 		# create and draw home button
-		home_button = Button(screen_width // 2 - 90, screen_height // 2, home_btn, screen)
+		home_button = Button(screen_width // 2 - 90, screen_height // 2 + 160, home_btn, screen)
 		if home_button.draw():
 			instruction_menu = False
 			main_menu = True
