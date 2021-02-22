@@ -35,9 +35,11 @@ exit_img = pygame.image.load('img/exit.png')
 save_img = pygame.image.load('img/save_btn.png')
 load_img = pygame.image.load('img/load_btn.png')
 mace_img = pygame.image.load('img/Mace.png')
-shooter_img = pygame.image.load('img/R1E.png')
+saw_img = pygame.image.load('img/saw.png')
 shooter_bullet_img = pygame.image.load('img/rock3.png')
-
+chest_img = pygame.image.load('img/chest.png')
+water_img = pygame.image.load('img/water.png')
+tree_img = pygame.image.load('img/tree.png')
 
 #define game variables
 clicked = False
@@ -117,10 +119,20 @@ def draw_world():
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
 				if world_data[row][col] == 10:
 					#enemy blocks
-					img = pygame.transform.scale(shooter_img, (tile_size, int(tile_size * 0.75)))
+					img = pygame.transform.scale(saw_img, (tile_size, int(tile_size * 0.75)))
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
-
-
+				if world_data[row][col] == 11:
+					#chest
+					img = pygame.transform.scale(chest_img, (tile_size, int(tile_size * 0.75)))
+					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
+				if world_data[row][col] == 12:
+					#lava
+					img = pygame.transform.scale(water_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size + (tile_size // 2)))
+				if world_data[row][col] == 13:
+					#tree
+					img = pygame.transform.scale(tree_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size + (tile_size // 2)))
 
 class Button():
 	def __init__(self, x, y, image):
@@ -138,6 +150,11 @@ class Button():
 		#check mouseover and clicked conditions
 		if self.rect.collidepoint(pos):
 			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+				action = True
+				self.clicked = True
+				
+		if self.rect.collidepoint(pos):
+			if pygame.mouse.get_pressed()[0] == 2 and self.clicked == False:
 				action = True
 				self.clicked = True
 
@@ -202,12 +219,12 @@ while run:
 				#update tile value
 				if pygame.mouse.get_pressed()[0] == 1:
 					world_data[y][x] += 1
-					if world_data[y][x] > 10:
+					if world_data[y][x] > 13:
 						world_data[y][x] = 0
 				elif pygame.mouse.get_pressed()[2] == 1:
 					world_data[y][x] -= 1
 					if world_data[y][x] < 0:
-						world_data[y][x] = 10
+						world_data[y][x] = 13
 		if event.type == pygame.MOUSEBUTTONUP:
 			clicked = False
 		#up and down key presses to change level number
