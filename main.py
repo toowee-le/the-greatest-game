@@ -47,6 +47,7 @@ tile_size = 45
 game_over = 0
 lives = 3
 main_menu = True
+instruction_menu = -1
 level = 1
 max_levels = 7
 score = 0
@@ -65,6 +66,7 @@ restart_img = pygame.image.load('img/restart_btn.png')
 start_img = pygame.image.load('img/start_btn.png')
 exit_img = pygame.image.load('img/exit_btn.png')
 instruction_img = pygame.image.load('img/instruction_btn.png')
+home_btn = pygame.image.load('img/home_btn.png')
 scoreboard_img = pygame.image.load('img/scoreboard_btn.png')
 sound_on_img = pygame.image.load('img/sound_on_btn.png')
 sound_on_img = pygame.transform.scale(sound_on_img, (100, 100))
@@ -94,10 +96,6 @@ game_over_fx.set_volume(0.3)
 # 		pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
 # 		pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
-# draw menu buttons
-def draw_menu_window():
-	instruction_button.draw()
-	scoreboard_button.draw()
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -478,10 +476,9 @@ shooter_bullet_group = pygame.sprite.Group()
 chest_group = pygame.sprite.Group()
 tree_group = pygame.sprite.Group()
 
-#create dummy coin for showing score
+# create dummy coin for showing score
 score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
 coin_group.add(score_coin)
-
 
 # load in level data and create world
 if path.exists(f"level{level}_data"):
@@ -496,7 +493,66 @@ exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img,
 instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
 scoreboard_button = Button(750, 750, scoreboard_img, screen)
 sound_on_button = Button(20, 20, sound_on_img, screen)
-sound_off_button = Button(130, 20, sound_off_img, screen)
+sound_off_button = Button(130, 20, sound_off_img, screen) 
+
+# draw menu buttons
+def draw_menu_window():
+	screen.blit(bg_img, (0, 0))
+	screen.blit(sun_img, (100, 100))
+
+def draw_instruction_window():
+	screen.fill((0,0,0))
+	screen.blit(bg_img, (0, 0))
+
+	draw_text(
+		f"HOW TO PLAY:",
+		font_score,
+		(0,0,0),
+		(screen_width // 3) - 200,
+		(screen_height // 3) - 120,
+	)
+	draw_text(
+		f"Help guide your character to his next level using the arrow keys.",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3) - 90,
+	)
+	draw_text(
+		f"Destroy your enemies by throwing rocks at them using the space bar.",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3) - 60,
+	)
+	draw_text(
+		f"For extra points, make sure to open the treasure chest.",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3) - 30,
+	)
+	draw_text(
+		f"3 lives and 7 levels - choose your moves wisely.",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3),
+	)
+	draw_text(
+		f"BEWARE: If your character dies, the coin count resets.",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 30,
+	)
+	draw_text(
+		f"Let the games begin!",
+		font_score,
+		(131, 139, 139),
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 60,
+	)
 
 # main game loop
 run = True
@@ -504,13 +560,10 @@ while run:
 
 	clock.tick(fps)
 
-	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (100, 100))
+	draw_menu_window()
 
-	# only display start and exit buttons on the menu page
-	if main_menu == True:
-		draw_menu_window()
-
+	# display menu page
+	if main_menu == True and instruction_menu == -1:
 		# sound buttons
 		if sound_on_button.draw() and sound == 0:
 			sound = 1
@@ -518,61 +571,31 @@ while run:
 		if sound_off_button.draw() and sound == 1:
 			sound = 0
 			music_fx.stop()
-
+		
 		if exit_button.draw():
 			run = False
 		if start_button.draw():
 			main_menu = False
+		
+		scoreboard_button.draw()
 
-		draw_text(
-			f"INSTRUCTIONS:",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) - 120,
-		)
-		draw_text(
-			f"To move your character, please use the arrow keys",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) - 90,
-		)
-		draw_text(
-			f"To throw a rock, press the spacebar key",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) - 60,
-		)
-		draw_text(
-			f"To win- avoid the obstacles as you reach the doors of the next level",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) - 30,
-		)
-		draw_text(
-			f"3 lives and 7 levels - let the game begin!",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3),
-		)
-		draw_text(
-			f"BEWARE: If your character dies, the coin count is reset, ",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) + 30,
-		)
-		draw_text(
-			f"Choose your moves wisely",
-			font_score,
-			(131, 139, 139),
-			(screen_width // 3) - 200,
-			(screen_height // 3) + 60,
-		)
+		# display instructions page
+		if instruction_button.draw():
+			main_menu = False
+			instruction_menu = 1
+			while instruction_menu == 1:
+
+				draw_instruction_window()
+
+				# create and draw home button
+				home_button = Button(screen_width // 2 - 90, screen_height // 2, home_btn, screen)
+				if home_button.draw():
+					print("clicked")
+					main_menu = True
+					instruction_menu = -1
+
+				pygame.display.update()
+
 	else:
 		world.draw()
 
