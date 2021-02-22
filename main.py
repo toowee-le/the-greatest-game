@@ -47,7 +47,7 @@ tile_size = 45
 game_over = 0
 lives = 3
 main_menu = True
-level = 10
+level = 1
 max_levels = 10
 score = 0
 shooter_cooldown = 1000 # bullet cooldown in milliseconds
@@ -395,10 +395,10 @@ class World:
 				# if tile == 11:
 				# 	chest = Chest(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 				# 	chest_group.add(chest)
-				# 12 water
-				 if tile == 12:
-					water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				 	water_group.add(water)
+				#12 water
+				# if tile == 12:
+				# 	water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+				# 	water_group.add(water)
 				#13 tree
 				# if tile == 13:
 				# 	tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
