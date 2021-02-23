@@ -10,6 +10,7 @@ from components.platform import Platform
 from components.exit import Exit
 from components.chest import Chest
 from components.tree import Tree
+from components.bullet import Bullet
 
 #from swf.movie import SWF
 
@@ -172,7 +173,7 @@ class Player:
 
 			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
 				bullet = Bullet(
-					self.rect.x + 10, self.rect.bottom - 30, player.direction
+					self.rect.x + 10, self.rect.bottom - 30, player.direction, blob_group, platform_group, lava_group, exit_group, mace_group, saw_group, world
 				)
 				bullet_group.add(bullet)
 				self.last_shot = time_now
@@ -421,46 +422,6 @@ class World:
 		for tile in self.tile_list:
 			screen.blit(tile[0], tile[1])
 			# pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
-
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, direction):
-        pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load("img/rock9.png")
-        self.image = pygame.transform.scale(img, (12, 12))
-        self.rect = self.image.get_rect()
-        self.rect.center = [x, y]
-        self.direction = direction
-
-    # bullets disappear after a certain distance and direction is decided below
-    def update(self):
-        if self.direction == -1:
-            self.rect.x -= 5
-        else:
-            self.rect.x += 5
-
-        if pygame.sprite.spritecollide(self, (blob_group), True):
-            self.kill()
-        if pygame.sprite.spritecollide(self, (platform_group), False):
-            self.kill()
-        if pygame.sprite.spritecollide(self, (platform_group), False):
-            self.kill()
-        if pygame.sprite.spritecollide(self, (lava_group), False):
-            self.kill()
-        if pygame.sprite.spritecollide(self, (exit_group), False):
-            self.kill()
-        if pygame.sprite.spritecollide(self, (mace_group), False):
-            self.kill()
-            # mace.health_remaining -= 1
-        if pygame.sprite.spritecollide(self, (saw_group), True):
-            self.kill()
-
-        for tile in world.tile_list:
-            # check for collision in x direction
-            if tile[1].colliderect(self):
-                self.kill()
-            # check for collision in y direction
-            if tile[1].colliderect(self):
-                self.kill()
 
 player = Player(100, screen_height - 130)
 
