@@ -503,11 +503,11 @@ sound_off_button = Button(130, 20, sound_off_img, screen)
 # draw menu buttons
 def draw_menu_window():
 	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (100, 100))
+	screen.blit(sun_img, (710, 60))
 
 def draw_instruction_window():
-	screen.fill((255,255,255))
 	screen.blit(bg_img, (0, 0))
+	screen.blit(sun_img, (710, 60))
 
 	draw_text(
 		f"HOW TO PLAY:",
