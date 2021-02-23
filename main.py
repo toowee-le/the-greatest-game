@@ -583,7 +583,7 @@ while run:
 		# sound buttons
 		if sound_on_button.draw() and sound == 0:
 			sound = 1
-			music_fx.play()
+			music_fx.play(-1)
 		if sound_off_button.draw() and sound == 1:
 			sound = 0
 			music_fx.stop()
