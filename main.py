@@ -42,7 +42,7 @@ font = pygame.font.SysFont("Bauhaus 93", 100)
 font_score = pygame.font.SysFont("Bauhaus 93", 30)
 small_font = pygame.font.SysFont("Bauhaus 93", 20)
 header_font = pygame.font.Font('Rubik-Mono-One.ttf', 65)
-main_font = pygame.font.Font('Rubik-Mono-One.ttf', 16)
+main_font = pygame.font.Font('Rubik-Mono-One.ttf', 19)
 
 # define game variables
 tile_size = 45
@@ -62,6 +62,7 @@ white = (255, 255, 255)
 blue = (0, 0, 255)
 red = (231, 15, 17)
 green = (0, 255, 0)
+black = (45, 45, 45)
 
 # load images
 restart_img = pygame.image.load('img/restart_btn.png')
@@ -493,6 +494,8 @@ restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restar
 start_button = Button(screen_width // 2 - 130, screen_height // 2 - 66, start_img, screen, 'START')
 exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img, screen)
 instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
+play_button = Button(screen_width // 2 - 60, screen_height // 2 + 200, start_img, screen, 'PLAY')
+home_button = Button(screen_width // 2 - 230, screen_height // 2 + 200, home_btn, screen)
 scoreboard_button = Button(750, 750, scoreboard_img, screen)
 sound_on_button = Button(20, 20, sound_on_img, screen)
 sound_off_button = Button(130, 20, sound_off_img, screen) 
@@ -503,7 +506,7 @@ def draw_menu_window():
 	screen.blit(sun_img, (100, 100))
 
 def draw_instruction_window():
-	screen.fill((0,0,0))
+	screen.fill((255,255,255))
 	screen.blit(bg_img, (0, 0))
 
 	draw_text(
@@ -514,60 +517,88 @@ def draw_instruction_window():
 		(screen_height // 3) - 170,
 	)
 	draw_text(
-		f"- Move character to his next level with arrow keys",
+		f"-  Move character around the treasure",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 85,
+		(screen_height // 3) - 80,
 	)
 	draw_text(
-		f"- Jump with UP key to avoid obstacles",
+		f"   forest to his next level with -arrow keys-",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 55,
+		(screen_height // 3) - 60,
 	)
 	draw_text(
-		f"- Throw rocks with space bar to destroy enemies",
+		f"-  Don't fall in the lava or river by",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 25,
+		(screen_height // 3) - 20,
 	)
 	draw_text(
-		f"- Avoid the mace or you'll lose a live",
+		f"   jumping with the -up- key",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 5,
+		(screen_height // 3),
 	)
 	draw_text(
-		f"- Get the treasure chest for extra points",
+		f"-  Destory enemies by throwing rocks",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 35,
+		(screen_height // 3) + 40,
 	)
 	draw_text(
-		f"There's 7 levels and you only have 3 lives.",
+		f"   at them with -space bar-",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 105,
+		(screen_height // 3) + 60,
 	)
 	draw_text(
-		f"Choose your moves wisely.",
+		f"-  Avoid the mace or you'll lose a live",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 135,
+		(screen_height // 3) + 100,
 	)
 	draw_text(
-		f"Let the games begin!!!",
+		f"-  Open the treasure chest for extra points",
 		main_font,
-		(0,0,0),
+		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 165,
+		(screen_height // 3) + 140,
+	)
+	draw_text(
+		f"-  Levels of play are from 1 to 7",
+		main_font,
+		black,
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 180,
+	)
+	draw_text(
+		f"-  Choose your moves wisely or you will ",
+		main_font,
+		black,
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 220,
+	)
+	draw_text(
+		f"   lose all your coins",
+		main_font,
+		black,
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 240,
+	)
+	draw_text(
+		f"-  Let the games begin treasure hunter!",
+		main_font,
+		black,
+		(screen_width // 3) - 200,
+		(screen_height // 3) + 290,
 	)
 
 # main game loop
@@ -590,6 +621,7 @@ while run:
 		
 		if exit_button.draw():
 			run = False
+			
 		if start_button.draw():
 			main_menu = False
 			instruction_menu = False
@@ -605,10 +637,13 @@ while run:
 		draw_instruction_window()
 
 		# create and draw home button
-		home_button = Button(screen_width // 2 - 90, screen_height // 2 + 160, home_btn, screen)
 		if home_button.draw():
 			instruction_menu = False
 			main_menu = True
+
+		if play_button.draw():
+			main_menu = False
+			instruction_menu = False
 
 	else:
 		world.draw()
