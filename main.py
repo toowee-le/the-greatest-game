@@ -648,7 +648,7 @@ while run:
 		# draw.grid()
 		game_over = player.update(game_over)
 
-		# if player has died
+		# display score and lives left when player dies
 		if game_over == -1 and lives > 0:
 			draw_text(
 				f"You lost {score} coins",
@@ -674,10 +674,17 @@ while run:
 		# if player loses all 3 lives
 		if lives == 0:
 			draw_text(
-				"Game Over!",
+				"You lose!", 
+				main_font,
+				red, 
+				(screen_width // 3) + 80, 
+				(screen_height // 3) + 60
+			)
+			draw_text(
+				"Game Over",
 				main_font,
 				black,
-				(screen_width // 3) + 75,
+				(screen_width // 3) + 76,
 				(screen_height // 3) + 100,
 			)
 			draw_text(
@@ -696,9 +703,8 @@ while run:
 				game_over = 0
 				score = 0
 				lives = 3
-		# player completes a level
+		# when player completes a level, reset game and go to next level
 		if game_over == 1:
-			# reset game and go to next level
 			level += 1
 			if level <= max_levels:
 				# reset level
@@ -728,13 +734,6 @@ while run:
 					game_over = 0
 					score = 0
 		elif game_over == -1 and lives == 0:
-			draw_text(
-				"You lose!", 
-				main_font,
-				red, 
-				(screen_width // 3) + 80, 
-				(screen_height // 3) + 60
-			)
 			# restart game
 			if restart_button.draw():
 				level = 1
