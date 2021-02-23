@@ -39,11 +39,14 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Treasure Forest Game")
 
 # define font
-font = pygame.font.SysFont("Bauhaus 93", 100)
-font_score = pygame.font.SysFont("Bauhaus 93", 30)
-small_font = pygame.font.SysFont("Bauhaus 93", 20)
 header_font = pygame.font.Font('Rubik-Mono-One.ttf', 65)
 main_font = pygame.font.Font('Rubik-Mono-One.ttf', 19)
+
+# define font colour
+white = (255, 255, 255)
+red = (231, 15, 17)
+green = (0, 255, 0)
+black = (45, 45, 45)
 
 # define game variables
 tile_size = 45
@@ -57,13 +60,6 @@ score = 0
 shooter_cooldown = 1000 # bullet cooldown in milliseconds
 last_shooter_shot = pygame.time.get_ticks()
 sound = 0
-
-# define colour
-white = (255, 255, 255)
-blue = (0, 0, 255)
-red = (231, 15, 17)
-green = (0, 255, 0)
-black = (45, 45, 45)
 
 # load images
 restart_img = pygame.image.load('img/restart_btn.png')
@@ -451,7 +447,7 @@ if path.exists(f"level{level}_data"):
 world = World(world_data)
 
 # create buttons
-restart_button = Button(screen_width // 2 - 50, screen_height // 2 + 100, restart_img, screen)
+restart_button = Button(screen_width // 2 - 55, screen_height // 2 + 40, restart_img, screen)
 start_button = Button(screen_width // 2 - 130, screen_height // 2 - 66, start_img, screen, 'START')
 exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img, screen)
 instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
@@ -597,11 +593,12 @@ while run:
 	elif instruction_menu == True:
 		draw_instruction_window()
 
-		# create and draw home button
+		# take user back to main menu
 		if home_button.draw():
 			instruction_menu = False
 			main_menu = True
 
+		# take user to game
 		if play_button.draw():
 			main_menu = False
 			instruction_menu = False
@@ -625,12 +622,12 @@ while run:
 			if pygame.sprite.spritecollide(player, coin_group, True):
 				score += 1
 				coin_fx.play()
-			draw_text("X " + str(score), font_score, white, tile_size - 10, 10)
+			draw_text("X" + str(score), main_font, white, tile_size, 10)
 
 			if pygame.sprite.spritecollide(player, chest_group, True):
 				score += 3
 				coin_fx.play()
-			draw_text("X " + str(score), font_score, white, tile_size - 10, 10)
+			draw_text("X" + str(score), main_font, white, tile_size, 10)
 
 		blob_group.draw(screen)
 		platform_group.draw(screen)
@@ -645,8 +642,8 @@ while run:
 		chest_group.draw(screen)
 		tree_group.draw(screen)
 
-		draw_text("LIVES: " + str(lives), font_score, white, tile_size + 700, 10)
-		draw_text("LEVEL: " + str(level) + "/7", font_score, white, tile_size + 350, 10)
+		draw_text("LIVES:" + str(lives), main_font, white, tile_size + 700, 10)
+		draw_text("LEVEL: " + str(level) + "/7", main_font, white, tile_size + 325, 10)
 
 		# draw.grid()
 		game_over = player.update(game_over)
@@ -654,18 +651,18 @@ while run:
 		# if player has died
 		if game_over == -1 and lives > 0:
 			draw_text(
-				f"You have {lives - 1} lives left",
-				font,
-				(127, 255, 212),
-				(screen_width // 3) - 200,
-				screen_height // 3,
+				f"You lost {score} coins",
+				main_font,
+				black,
+				(screen_width // 3) + 28,
+				(screen_height // 3) + 100,
 			)
 			draw_text(
-				f"Coins lost: {score}",
-				font,
-				(127, 255, 212),
-				(screen_width // 3) - 200,
-				screen_height // 3 - 100,
+				f"{lives - 1} lives left",
+				main_font,
+				black,
+				(screen_width // 3) + 60,
+				(screen_height // 3) + 130,
 			)
 			if restart_button.draw():
 				world_data = []
@@ -674,14 +671,21 @@ while run:
 				lives -= 1
 				print(lives)
 				score = 0
-		# if lost 3 lives
+		# if player loses all 3 lives
 		if lives == 0:
 			draw_text(
-				"Game Over! Play again?",
-				font,
-				(127, 255, 212),
-				(screen_width // 2) - 400,
-				screen_height // 2,
+				"Game Over!",
+				main_font,
+				black,
+				(screen_width // 3) + 75,
+				(screen_height // 3) + 100,
+			)
+			draw_text(
+				"Play again?",
+				main_font,
+				black,
+				(screen_width // 3) + 65,
+				(screen_height // 3) + 130,
 			)
 			score = 0
 			# restart game
@@ -692,7 +696,7 @@ while run:
 				game_over = 0
 				score = 0
 				lives = 3
-		# player completes level
+		# player completes a level
 		if game_over == 1:
 			# reset game and go to next level
 			level += 1
@@ -704,17 +708,17 @@ while run:
 			else:
 				draw_text(
 					"You Win!",
-					font,
-					blue,
-					(screen_width // 2) - 100,
-					screen_height // 2 - 100,
+					main_font,
+					green,
+					(screen_width // 3) + 75,
+					(screen_height // 3) + 100,
 				)
 				draw_text(
 					f"Coins won: {score}",
-					font,
-					blue,
-					(screen_width // 2) - 140,
-					screen_height // 2,
+					main_font,
+					black,
+					(screen_width // 3) + 65,
+					(screen_height // 3) + 130,
 				)
 				# restart game
 				if restart_button.draw():
@@ -725,7 +729,11 @@ while run:
 					score = 0
 		elif game_over == -1 and lives == 0:
 			draw_text(
-				"You loose!", font, blue, (screen_width // 2) - 140, screen_height // 2
+				"You lose!", 
+				main_font,
+				red, 
+				(screen_width // 3) + 80, 
+				(screen_height // 3) + 60
 			)
 			# restart game
 			if restart_button.draw():
