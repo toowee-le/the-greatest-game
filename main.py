@@ -521,84 +521,84 @@ def draw_instruction_window():
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 80,
+		(screen_height // 3) - 75,
 	)
 	draw_text(
 		f"   forest to his next level with -arrow keys-",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 60,
+		(screen_height // 3) - 55,
 	)
 	draw_text(
 		f"-  Don't fall in the lava or river by",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) - 20,
+		(screen_height // 3) - 15,
 	)
 	draw_text(
 		f"   jumping with the -up- key",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3),
+		(screen_height // 3) + 5,
 	)
 	draw_text(
 		f"-  Destory enemies by throwing rocks",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 40,
+		(screen_height // 3) + 45,
 	)
 	draw_text(
 		f"   at them with -space bar-",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 60,
+		(screen_height // 3) + 65,
 	)
 	draw_text(
 		f"-  Avoid the mace or you'll lose a live",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 100,
+		(screen_height // 3) + 105,
 	)
 	draw_text(
 		f"-  Open the treasure chest for extra points",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 140,
+		(screen_height // 3) + 145,
 	)
 	draw_text(
 		f"-  Levels of play are from 1 to 7",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 180,
+		(screen_height // 3) + 185,
 	)
 	draw_text(
 		f"-  Choose your moves wisely or you will ",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 220,
+		(screen_height // 3) + 225,
 	)
 	draw_text(
 		f"   lose all your coins",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 240,
+		(screen_height // 3) + 245,
 	)
 	draw_text(
 		f"-  Let the games begin treasure hunter!",
 		main_font,
 		black,
 		(screen_width // 3) - 200,
-		(screen_height // 3) + 290,
+		(screen_height // 3) + 295,
 	)
 
 # main game loop
