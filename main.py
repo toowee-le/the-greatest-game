@@ -394,13 +394,17 @@ class World:
 				# 	chest = Chest(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
 				# 	chest_group.add(chest)
 				#12 water
-				# if tile == 12:
-				# 	water = Water(col_count * tile_size, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				# 	water_group.add(water)
+				if tile == 12:
+					water = Water(
+						col_count * tile_size, 
+						row_count * tile_size + 1 + (tile_size // 2), 
+						tile_size
+					)
+					water_group.add(water)
 				#13 tree
-				# if tile == 13:
-				# 	tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				# 	tree_group.add(tree)
+				if tile == 13:
+					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					tree_group.add(tree)
 				# # flowers
 				# if tile == 15:
 				# 	flower = Flower(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
