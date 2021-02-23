@@ -590,6 +590,7 @@ while run:
 			main_menu = False
 			instruction_menu = True
 
+	# if user clicked on instruction page
 	elif instruction_menu == True:
 		draw_instruction_window()
 
@@ -603,6 +604,7 @@ while run:
 			main_menu = False
 			instruction_menu = False
 
+	# if user clicked to play game
 	else:
 		world.draw()
 
