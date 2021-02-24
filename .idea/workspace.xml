@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3974801f-0f27-46de-93bf-d1b8d39b78d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/the-greatest-game.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/bullet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/button.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/chest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/coin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/enemy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/exit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/lava.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/lives.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/mace.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/platform.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/saw.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/tree.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/water.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/bg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/bg_music.wav" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/bush.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/chest.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/coin-animation.swf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/flower.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/instruction_btn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/rock.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/saw.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/scoreboard_btn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/sound_off_btn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/sound_on_btn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/tree.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/water.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/First Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/First Game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a_level.py" beforeDir="false" afterPath="$PROJECT_DIR$/a_level.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/Platform Game Assets/Chest/png/1024x256.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/1024x256.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/Platform Game Assets/Coin Animation/Coin Animation.swf" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Platform Game Assets/Coin Animation/coin-animation.swf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/Platform Game Assets/Tiles/png/512x512/GrassCliffMid.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Platform Game Assets/Tiles/png/512x512/GrassCliffMid.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/Update 1.7/GUI/png/Elements512x256.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/Update 1.7/GUI/png/Elements512x256.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/coin.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/coin.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/exit_btn.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/exit_btn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/grass.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/grass.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/heart.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/heart.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/platform.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/platform.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/start_btn.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/start_btn.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/level1_data" beforeDir="false" afterPath="$PROJECT_DIR$/level1_data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/level2_data" beforeDir="false" afterPath="$PROJECT_DIR$/level2_data" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1oeHz1kVMIXipL5CLH7oNFLx0WW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager">
+    <configuration name="First Game" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/First Game.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.First Game" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3974801f-0f27-46de-93bf-d1b8d39b78d1" name="Default Changelist" comment="" />
+      <created>1613640396740</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1613640396740</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/First Game.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
