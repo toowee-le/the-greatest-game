@@ -15,11 +15,10 @@ The aim of the game is to guide the character from levels 1 to 7 and collect as 
 
 ## Manifesto
 
-* Our [Trello board](https://trello.com/b/ys58hpfi/treasure-forest)
+Our [Trello](https://trello.com/b/ys58hpfi/treasure-forest) board
 
 
 ## Getting Started
-
 ### System Requirements
 
 `python 3.9` and the Python package installer `pip` are required to play Treasure Forest locally.
