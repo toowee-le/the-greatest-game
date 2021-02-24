@@ -314,7 +314,7 @@ class World:
 					water_group.add(water)
 				#13 tree
 				if tile == 13:
-					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					tree = Tree(col_count * tile_size, row_count * tile_size + (tile_size // 2), tile_size)
 					tree_group.add(tree)
 
 				col_count += 1
