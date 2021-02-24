@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 class Bullet(pygame.sprite.Sprite):
-	def __init__(self,x,y, direction, blob_group, platform_group, lava_group, exit_group, mace_group, world):
+	def __init__(self, x, y, direction, blob_group, platform_group, lava_group, exit_group, mace_group, saw_group, world):
 		pygame.sprite.Sprite.__init__(self)
 		img = pygame.image.load('img/rock9.png')
 		self.image = pygame.transform.scale(img, (12,12))
@@ -15,6 +15,7 @@ class Bullet(pygame.sprite.Sprite):
 		self.lava_group = lava_group
 		self.exit_group = exit_group
 		self.mace_group = mace_group
+		self.saw_group = saw_group
 		self.world = world
 
 	#bullets disappear after a certain distance and direction is decided below
@@ -24,20 +25,20 @@ class Bullet(pygame.sprite.Sprite):
 		else: 
 			self.rect.x -= 5
 
-		if pygame.sprite.spritecollide(self, (blob_group), True):
+		if pygame.sprite.spritecollide(self, (self.blob_group), True):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group), False):
+		if pygame.sprite.spritecollide(self, (self.platform_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (platform_group), False):
+		if pygame.sprite.spritecollide(self, (self.platform_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (lava_group), False):
+		if pygame.sprite.spritecollide(self, (self.lava_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (exit_group), False):
+		if pygame.sprite.spritecollide(self, (self.exit_group), False):
 			self.kill()
-		if pygame.sprite.spritecollide(self, (mace_group), False):
+		if pygame.sprite.spritecollide(self, (self.mace_group), False):
 			self.kill()
 			# mace.health_remaining -= 1
-		if pygame.sprite.spritecollide(self, (shooter_group), True):
+		if pygame.sprite.spritecollide(self, (self.saw_group), True):
 			self.kill()
 
 		for tile in self.world.tile_list:
