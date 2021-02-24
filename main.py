@@ -12,6 +12,7 @@ from components.chest import Chest
 from components.tree import Tree
 from components.bullet import Bullet
 from components.player import Player
+from components.lives import Lives
 
 # import and initialize pygame
 import pygame
@@ -339,10 +340,15 @@ saw_group = pygame.sprite.Group()
 shooter_bullet_group = pygame.sprite.Group()
 chest_group = pygame.sprite.Group()
 tree_group = pygame.sprite.Group()
+heart_group = pygame.sprite.Group()
+
 
 # create dummy coin for showing score
 score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
 coin_group.add(score_coin)
+# this displays dummy heart next lives score:
+lives_score = Lives(tile_size + 689, tile_size + -25, tile_size)
+heart_group.add(lives_score)
 
 # load in level data and create world
 if path.exists(f"level{level}_data"):
@@ -449,8 +455,11 @@ while run:
 		shooter_bullet_group.draw(screen)
 		chest_group.draw(screen)
 		tree_group.draw(screen)
+		heart_group.draw(screen)
 
-		draw_text("LIVES:" + str(lives), main_font, white, tile_size + 700, 10)
+		# this displays the lives score next dummy heart
+		draw_text('X' + str(lives), main_font, white, tile_size + 700, 10)
+		# draw_text("LIVES:" + str(lives), main_font, white, tile_size + 700, 10)
 		draw_text("LEVEL: " + str(level) + "/7", main_font, white, tile_size + 325, 10)
 
 		# draw.grid()
