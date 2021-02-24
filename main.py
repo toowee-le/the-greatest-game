@@ -1,4 +1,4 @@
-# import classes
+# importing classes
 from components.button import Button
 from components.enemy import Enemy
 from components.mace import Mace
