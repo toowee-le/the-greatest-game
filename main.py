@@ -280,8 +280,8 @@ class World:
 				#7 coin
 				if tile == 7:
 					coin = Coin(
-						col_count * tile_size // 2,
-						row_count * tile_size + 1 + (tile_size // 2),
+						col_count * tile_size + (tile_size // 4),
+						row_count * tile_size + (tile_size // 4),
 						tile_size
 					)
 					coin_group.add(coin)
