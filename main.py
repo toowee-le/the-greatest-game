@@ -279,12 +279,21 @@ class World:
 					lava_group.add(lava)
 				#7 coin
 				if tile == 7:
+<<<<<<< HEAD
                     coin = Coin(
                         col_count * tile_size + (tile_size // 4),
                         row_count * tile_size + (tile_size // 4),
                         tile_size
                     )
                     coin_group.add(coin)
+=======
+					coin = Coin(
+						col_count * tile_size + (tile_size // 4),
+						row_count * tile_size + (tile_size // 4),
+						tile_size
+					)
+					coin_group.add(coin)
+>>>>>>> 087e8adcbc7862c60dc606ffdb5c8af2bf3e8a0d
 				#8 exit level door
 				if tile == 8:
 					exit = Exit(
@@ -302,7 +311,7 @@ class World:
 					#shooter.move_towards_player(player)
 				#11 chest
 				if tile == 11:
-					chest = Chest(col_count * tile_size, row_count * tile_size + 15)
+					chest = Chest(col_count * tile_size, row_count * tile_size)
 					chest_group.add(chest)
 				#12 water
 				if tile == 12:
