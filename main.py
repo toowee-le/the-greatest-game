@@ -13,8 +13,6 @@ from components.tree import Tree
 from components.bullet import Bullet
 from components.player import Player
 
-#from swf.movie import SWF
-
 # import and initialize pygame
 import pygame
 from pygame.locals import *
@@ -33,6 +31,7 @@ pygame.init()
 clock = pygame.time.Clock()
 fps = 60
 
+# set gamw window size
 screen_width = 900
 screen_height = 900
 
@@ -97,12 +96,14 @@ game_over_fx.set_volume(0.3)
 # 		pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
 # 		pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
+"""
+Helper methods
+"""
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
 	screen.blit(img, (x, y))
 
-# reset level function
 def reset_level(level):
 	player.reset(100, screen_height - 130)
 	blob_group.empty()
@@ -123,155 +124,10 @@ def reset_level(level):
 
 	return world
 
-# a class for the world map
-class World:
-	def __init__(self, data):
-		self.tile_list = []
+"""
+Draw window methods
+"""
 
-		row_count = 0
-		for row in data:
-			col_count = 0
-			for tile in row:
-				#1 dirt
-				if tile == 1:
-					img = pygame.transform.scale(dirt_img, (tile_size, tile_size))
-					img_rect = img.get_rect()
-					img_rect.x = col_count * tile_size
-					img_rect.y = row_count * tile_size
-					tile = (img, img_rect)
-					self.tile_list.append(tile)
-				#2 grass
-				if tile == 2:
-					img = pygame.transform.scale(grass_img, (tile_size, tile_size))
-					img_rect = img.get_rect()
-					img_rect.x = col_count * tile_size
-					img_rect.y = row_count * tile_size
-					tile = (img, img_rect)
-					self.tile_list.append(tile)
-				#3 enemy blob
-				if tile == 3:
-					blob = Enemy(col_count * tile_size, row_count * tile_size + 15)
-					blob_group.add(blob)
-				#4 platform
-				if tile == 4:
-					platform = Platform(
-						col_count * tile_size, row_count * tile_size, 1, 0, tile_size
-					)
-					platform_group.add(platform)
-				#5 platform
-				if tile == 5:
-					platform = Platform(
-						col_count * tile_size, row_count * tile_size, 0, 1,tile_size
-					)
-					platform_group.add(platform)
-				#6 lava
-				if tile == 6:
-					lava = Lava(
-						col_count * tile_size,
-						row_count * tile_size + 1 + (tile_size // 2),
-						tile_size
-					)
-					lava_group.add(lava)
-				#7 coin
-				if tile == 7:
-					coin = Coin(
-						col_count * tile_size // 2,
-						row_count * tile_size + 1 + (tile_size // 2),
-						tile_size
-					)
-					coin_group.add(coin)
-				#8 exit level door
-				if tile == 8:
-					exit = Exit(
-						col_count * tile_size, row_count * tile_size - (tile_size // 2), tile_size
-					)
-					exit_group.add(exit)
-				#9 mace enemy
-				if tile == 9:
-					mace = Mace(col_count * tile_size, row_count * tile_size + 15, 4)
-					mace_group.add(mace)
-				#10 saw
-				if tile == 10:
-					saw = Saw(col_count * tile_size, row_count * tile_size + 15, tile_size)
-					saw_group.add(saw)
-					#shooter.move_towards_player(player)
-				#11 chest
-				if tile == 11:
-					chest = Chest(col_count * tile_size, row_count * tile_size + 15)
-					chest_group.add(chest)
-				# from tuyet's branch
-				# if tile == 11:
-				# 	chest = Chest(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				# 	chest_group.add(chest)
-				#12 water
-				if tile == 12:
-					water = Water(
-						col_count * tile_size, 
-						row_count * tile_size + 1 + (tile_size // 2), 
-						tile_size
-					)
-					water_group.add(water)
-				#13 tree
-				if tile == 13:
-					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-					tree_group.add(tree)
-				# # flowers
-				# if tile == 15:
-				# 	flower = Flower(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				# 	flower_group.add(flower)
-				# # rock
-				# if tile == 16:
-				# 	rock = rock(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
-				# 	rock_group.add(rock)
-				# character animation
-
-				col_count += 1
-			row_count += 1
-
-	def draw(self):
-		for tile in self.tile_list:
-			screen.blit(tile[0], tile[1])
-			# pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
-
-player = Player(100, screen_height - 130)
-
-# groups
-blob_group = pygame.sprite.Group()
-chest_group = pygame.sprite.Group()
-platform_group = pygame.sprite.Group()
-lava_group = pygame.sprite.Group()
-water_group = pygame.sprite.Group()
-exit_group = pygame.sprite.Group()
-coin_group = pygame.sprite.Group()
-mace_group = pygame.sprite.Group()
-bullet_group = pygame.sprite.Group()
-saw_group = pygame.sprite.Group()
-shooter_bullet_group = pygame.sprite.Group()
-chest_group = pygame.sprite.Group()
-tree_group = pygame.sprite.Group()
-
-# create dummy coin for showing score
-score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
-coin_group.add(score_coin)
-
-# load in level data and create world
-if path.exists(f"level{level}_data"):
-	pickle_in = open(f"level{level}_data", "rb")
-	world_data = pickle.load(pickle_in)
-world = World(world_data)
-
-# create buttons
-restart_button = Button(screen_width // 2 - 55, screen_height // 2 + 40, restart_img, screen)
-start_button = Button(screen_width // 2 - 130, screen_height // 2 - 66, start_img, screen, 'START')
-exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img, screen)
-instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
-play_button = Button(screen_width // 2 - 60, screen_height // 2 + 200, start_img, screen, 'PLAY')
-home_button = Button(screen_width // 2 - 230, screen_height // 2 + 200, home_btn, screen)
-scoreboard_button = Button(750, 750, scoreboard_img, screen)
-sound_on_button = Button(20, 20, sound_on_img, screen)
-sound_off_button = Button(130, 20, sound_off_img, screen) 
-
-# draw menu buttons
 def draw_menu_window():
 	screen.blit(bg_img, (0, 0))
 	screen.blit(sun_img, (710, 60))
@@ -371,6 +227,142 @@ def draw_instruction_window():
 		(screen_width // 3) - 200,
 		(screen_height // 3) + 295,
 	)
+
+# a class to create the game map
+class World:
+	def __init__(self, data):
+		self.tile_list = []
+
+		row_count = 0
+		for row in data:
+			col_count = 0
+			for tile in row:
+				#1 dirt
+				if tile == 1:
+					img = pygame.transform.scale(dirt_img, (tile_size, tile_size))
+					img_rect = img.get_rect()
+					img_rect.x = col_count * tile_size
+					img_rect.y = row_count * tile_size
+					tile = (img, img_rect)
+					self.tile_list.append(tile)
+				#2 grass
+				if tile == 2:
+					img = pygame.transform.scale(grass_img, (tile_size, tile_size))
+					img_rect = img.get_rect()
+					img_rect.x = col_count * tile_size
+					img_rect.y = row_count * tile_size
+					tile = (img, img_rect)
+					self.tile_list.append(tile)
+				#3 enemy blob
+				if tile == 3:
+					blob = Enemy(col_count * tile_size, row_count * tile_size + 15)
+					blob_group.add(blob)
+				#4 platform
+				if tile == 4:
+					platform = Platform(
+						col_count * tile_size, row_count * tile_size, 1, 0, tile_size
+					)
+					platform_group.add(platform)
+				#5 platform
+				if tile == 5:
+					platform = Platform(
+						col_count * tile_size, row_count * tile_size, 0, 1,tile_size
+					)
+					platform_group.add(platform)
+				#6 lava
+				if tile == 6:
+					lava = Lava(
+						col_count * tile_size,
+						row_count * tile_size + 1 + (tile_size // 2),
+						tile_size
+					)
+					lava_group.add(lava)
+				#7 coin
+				if tile == 7:
+					coin = Coin(
+						col_count * tile_size // 2,
+						row_count * tile_size + 1 + (tile_size // 2),
+						tile_size
+					)
+					coin_group.add(coin)
+				#8 exit level door
+				if tile == 8:
+					exit = Exit(
+						col_count * tile_size, row_count * tile_size - (tile_size // 2), tile_size
+					)
+					exit_group.add(exit)
+				#9 mace enemy
+				if tile == 9:
+					mace = Mace(col_count * tile_size, row_count * tile_size + 15, 4)
+					mace_group.add(mace)
+				#10 saw
+				if tile == 10:
+					saw = Saw(col_count * tile_size, row_count * tile_size + 15, tile_size)
+					saw_group.add(saw)
+					#shooter.move_towards_player(player)
+				#11 chest
+				if tile == 11:
+					chest = Chest(col_count * tile_size, row_count * tile_size + 15)
+					chest_group.add(chest)
+				#12 water
+				if tile == 12:
+					water = Water(
+						col_count * tile_size,
+						row_count * tile_size + 1 + (tile_size // 2),
+						tile_size
+					)
+					water_group.add(water)
+				#13 tree
+				if tile == 13:
+					tree = Tree(col_count * tile_size // 2, row_count * tile_size + 1 + (tile_size // 2), tile_size)
+					tree_group.add(tree)
+
+				col_count += 1
+			row_count += 1
+
+	def draw(self):
+		for tile in self.tile_list:
+			screen.blit(tile[0], tile[1])
+			# pygame.draw.rect(screen, (255, 255, 255), tile[1], 2)
+
+# sprite groups
+blob_group = pygame.sprite.Group()
+chest_group = pygame.sprite.Group()
+platform_group = pygame.sprite.Group()
+lava_group = pygame.sprite.Group()
+water_group = pygame.sprite.Group()
+exit_group = pygame.sprite.Group()
+coin_group = pygame.sprite.Group()
+mace_group = pygame.sprite.Group()
+bullet_group = pygame.sprite.Group()
+saw_group = pygame.sprite.Group()
+shooter_bullet_group = pygame.sprite.Group()
+chest_group = pygame.sprite.Group()
+tree_group = pygame.sprite.Group()
+
+# create dummy coin for showing score
+score_coin = Coin(tile_size // 2, tile_size // 2, tile_size)
+coin_group.add(score_coin)
+
+# load in level data and create world
+if path.exists(f"level{level}_data"):
+	pickle_in = open(f"level{level}_data", "rb")
+	world_data = pickle.load(pickle_in)
+world = World(world_data)
+
+# create player
+player = Player(100, screen_height - 130)
+
+# create buttons
+restart_button = Button(screen_width // 2 - 55, screen_height // 2 + 40, restart_img, screen)
+start_button = Button(screen_width // 2 - 130, screen_height // 2 - 66, start_img, screen, 'START')
+exit_button = Button(screen_width // 2 + 152, screen_height // 2 - 65, exit_img, screen)
+instruction_button = Button(screen_width // 2 - 280, screen_height // 2 - 65, instruction_img, screen)
+play_button = Button(screen_width // 2 - 60, screen_height // 2 + 200, start_img, screen, 'PLAY')
+home_button = Button(screen_width // 2 - 230, screen_height // 2 + 200, home_btn, screen)
+scoreboard_button = Button(750, 750, scoreboard_img, screen)
+sound_on_button = Button(20, 20, sound_on_img, screen)
+sound_off_button = Button(130, 20, sound_off_img, screen)
 
 # main game loop
 run = True
