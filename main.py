@@ -280,8 +280,8 @@ class World:
 				#7 coin
 				if tile == 7:
 					coin = Coin(
-						col_count * tile_size // 2,
-						row_count * tile_size + 1 + (tile_size // 2),
+						col_count * tile_size + (tile_size // 4),
+						row_count * tile_size + (tile_size // 4),
 						tile_size
 					)
 					coin_group.add(coin)
@@ -302,7 +302,7 @@ class World:
 					#shooter.move_towards_player(player)
 				#11 chest
 				if tile == 11:
-					chest = Chest(col_count * tile_size, row_count * tile_size + 15)
+					chest = Chest(col_count * tile_size, row_count * tile_size)
 					chest_group.add(chest)
 				#12 water
 				if tile == 12:
