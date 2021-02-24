@@ -124,7 +124,7 @@ def draw_world():
 				if world_data[row][col] == 11:
 					#chest
 					img = pygame.transform.scale(chest_img, (tile_size, int(tile_size * 0.75)))
-					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
+					screen.blit(img, (col * tile_size, row * tile_size))
 				if world_data[row][col] == 12:
 					#lava
 					img = pygame.transform.scale(water_img, (tile_size, tile_size // 2))

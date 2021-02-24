@@ -302,7 +302,7 @@ class World:
 					#shooter.move_towards_player(player)
 				#11 chest
 				if tile == 11:
-					chest = Chest(col_count * tile_size, row_count * tile_size + 15)
+					chest = Chest(col_count * tile_size, row_count * tile_size)
 					chest_group.add(chest)
 				#12 water
 				if tile == 12:
