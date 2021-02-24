@@ -1,4 +1,5 @@
 import pygame
+from components.bullet import Bullet
 
 class Player:
 	def __init__(self, x, y):
@@ -57,7 +58,7 @@ class Player:
 
 			if key[pygame.K_SPACE] and time_now - self.last_shot > cooldown:
 				bullet = Bullet(
-					self.rect.x + 10, self.rect.bottom - 30, player.direction, blob_group, platform_group, lava_group, exit_group, mace_group, saw_group, world
+					self.rect.x + 10, self.rect.bottom - 30, self.direction, blob_group, platform_group, lava_group, exit_group, mace_group, saw_group, world
 				)
 				bullet_group.add(bullet)
 				self.last_shot = time_now
