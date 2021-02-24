@@ -20,10 +20,10 @@ class Bullet(pygame.sprite.Sprite):
 
 	#bullets disappear after a certain distance and direction is decided below
 	def update(self):
-		if self.direction == 1:
-			self.rect.x += 5
-		else: 
+		if self.direction == -1:
 			self.rect.x -= 5
+		else: 
+			self.rect.x += 5
 
 		if pygame.sprite.spritecollide(self, (self.blob_group), True):
 			self.kill()
