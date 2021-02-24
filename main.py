@@ -279,12 +279,12 @@ class World:
 					lava_group.add(lava)
 				#7 coin
 				if tile == 7:
-					coin = Coin(
-						col_count * tile_size // 2,
-						row_count * tile_size + 1 + (tile_size // 2),
-						tile_size
-					)
-					coin_group.add(coin)
+                    coin = Coin(
+                        col_count * tile_size + (tile_size // 4),
+                        row_count * tile_size + (tile_size // 4),
+                        tile_size
+                    )
+                    coin_group.add(coin)
 				#8 exit level door
 				if tile == 8:
 					exit = Exit(
