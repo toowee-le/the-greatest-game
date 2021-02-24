@@ -1,6 +1,13 @@
 # Treasure Forest Game - Final Project
 This is our final two week project at Makers to build a platformer game in Python using Pygame.
 
+**Contributors:**
+* [Tuyet Le](https://github.com/toowee-le)
+* [Rayhan Mohamed](https://github.com/Blank-21)
+* [Rashidat Balogun](https://github.com/RB301)
+* [Michael Ndukwe](https://github.com/lbhMichael)
+
+
 ## Project Aims
 The aim of the game is to guide the character from levels 1 to 7 and collect as many coins and treasure chest as possible without dying.
 
@@ -9,6 +16,7 @@ The aim of the game is to guide the character from levels 1 to 7 and collect as 
 ## Manifesto
 
 * Our [Trello board](https://trello.com/b/ys58hpfi/treasure-forest)
+
 
 ## Getting Started
 
@@ -21,9 +29,11 @@ If you do not have the latest Python version, you will need to install or update
 To check if your system has these requirements, open your operating system's terminal and run:
 
 ```
-python3 --version # Check Python version. You should see the output 3.9.1 or above
+# Check Python version. You should see the output 3.9.1 or above
+python3 --version
 
-pip3 --version # Check if the Python package installer is installed
+# Check if the Python package installer is installed
+pip3 --version
 ```
 
 ### Game installation
@@ -36,29 +46,19 @@ git clone https://github.com/toowee-le/the-greatest-game.git
 
 # Change directory into the cloned directory
 cd the-greatest-game
-
 ```
 
 ## Begin the game
 
-To run the game, make sure you are in the `the-greatest-game` root directory and run `python main.py`. To quit the game, press the 'X' button on start menu or simply close the window.
+To run the game, make sure you are in the `the-greatest-game` root directory and run `python main.py`. To quit the game, press the 'X' button on the start menu or simply close the window.
 
 
-## Technologies used:
+## Technologies used
 
 | Tech    | Description                                                                 |
 |---------|-----------------------------------------------------------------------------|
 | Python3 | Main programming language                                                   |
 | Pygame  | An open-source Python library designed for writing programs for video games |
-
-
-## How to Contribute
-We'd love to hear from you if you would like to contribute to help us improve Treasure Forest. To do so:
-
-1. Fork the repo
-2. Make regular, small and clear commit messages along the way
-3. Make a pull request back to this repo explaining the contributions you made
-5. Your name will be added to our list of contributors if your pull request is approved
 
 
 ## User stories
@@ -161,6 +161,15 @@ As a user,
 So that I can die
 I would like to be able to receive hitpoints
 ```
+
+## How to Contribute
+We'd love to hear from you if you would like to contribute to help us improve Treasure Forest. To do so:
+
+1. Fork the repo
+2. Make regular, small and clear commit messages along the way
+3. Make a pull request back to this repo explaining the contributions you made
+5. Your name will be added to our list of contributors if your pull request is approved
+
 
 ## Authors
 * [Tuyet Le](https://github.com/toowee-le)
