@@ -38,7 +38,7 @@ class Bullet(pygame.sprite.Sprite):
 		if pygame.sprite.spritecollide(self, (self.mace_group), False):
 			self.kill()
 			# mace.health_remaining -= 1
-		if pygame.sprite.spritecollide(self, (self.saw_group), True):
+		if pygame.sprite.spritecollide(self, (self.saw_group), False):
 			self.kill()
 
 		for tile in self.world.tile_list:

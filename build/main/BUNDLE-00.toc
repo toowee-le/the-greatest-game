@@ -1,0 +1,1 @@
+([('main', '/Users/michaelndukwe/the-greatest-game/dist/main', 'EXECUTABLE')],)
