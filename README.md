@@ -18,6 +18,14 @@ The aim of the game is to guide the character from levels 1 to 7 and collect as 
 Our [Trello](https://trello.com/b/ys58hpfi/treasure-forest) board
 
 
+## Technologies used
+
+| Tech    | Description                                                                 |
+|---------|-----------------------------------------------------------------------------|
+| Python3 | Main programming language                                                   |
+| Pygame  | An open-source Python library designed for writing programs for video games |
+
+
 ## Getting Started
 ### System Requirements
 
@@ -45,19 +53,14 @@ git clone https://github.com/toowee-le/the-greatest-game.git
 
 # Change directory into the cloned directory
 cd the-greatest-game
+
+# Install the pygame module
+pip3 install pygame
 ```
 
 ## Begin the game
 
 To run the game, make sure you are in the `the-greatest-game` root directory and run `python main.py`. To quit the game, press the 'X' button on the start menu or simply close the window.
-
-
-## Technologies used
-
-| Tech    | Description                                                                 |
-|---------|-----------------------------------------------------------------------------|
-| Python3 | Main programming language                                                   |
-| Pygame  | An open-source Python library designed for writing programs for video games |
 
 
 ## User stories
